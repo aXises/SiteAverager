@@ -1,0 +1,19 @@
+{
+  "name": "siteaverager",
+  "version": "1.0.0",
+  "description": "Averages colour on a given site/query",
+  "main": "app.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aXises/SiteAverager.git"
+  },
+  "author": "Xinyi Li",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/aXises/SiteAverager/issues"
+  },
+  "homepage": "https://github.com/aXises/SiteAverager#readme",
+}
