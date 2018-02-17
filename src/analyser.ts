@@ -1,6 +1,7 @@
 import * as request from 'request';
 import * as async from 'async';
 import * as jsdom from 'jsdom';
+import * as jquery from 'jquery';
 
 class scrapper {
     private url: string;
@@ -30,37 +31,49 @@ class scrapper {
     {
         var self = this;
         var document = window.document;
-
-        async.parallel([
-            function(callback) 
-            {
-                var imgs = document.querySelectorAll('img');
-                Array.prototype.forEach.call(imgs, function(elem, i)
-                {
-                    self.images.push(elem.getAttribute('src'));
-                    if (i == imgs.length - 1) callback();
-                });
-            },
-            function(callback)
-            {
-                var elements = document.querySelectorAll('*');
-                Array.prototype.forEach.call(elements, function(elem, i)
-                {
-                    var image = window.getComputedStyle(elem).backgroundImage;
-                    if (image && image != 'none')
-                    {
-                        if (image.slice(4, 8) == 'http')
-                        {
-                            self.images.push(image.split('(')[1].split(')')[0]);
-
-                        }
-                    }
-                    if (i == elements.length - 1) callback();
-                });
-            }
-        ], function(err, res) 
+        var $ = jquery(window)
+        $(document).ready(function () 
         {
-            callback(self.images);
+            async.parallel([
+                function(callback) 
+                {
+                    if ($('img').length == 0) callback();
+                    $('img').each(function (i) {
+                        var imgs = $(this);
+                        self.images.push($(this).attr('src'));
+                        if (i == $('img').length - 1) callback();
+                    });
+                },
+                function(callback)
+                {
+                    if ($('*').length == 0) callback();
+                    $('*').each(function(i) {
+                        var image = $(this).css("background-image");
+                        if (image && image != 'none')
+                        {
+                            if (image.slice(4, 8) == 'http')
+                            {
+                                self.images.push(image.split('(')[1].split(')')[0]);
+                            }
+                            else
+                            {
+                                image = image.slice(4, image.length - 1)
+
+                                if (self.url.charAt(self.url.length) == '/')
+                                {
+                                    if (image.charAt(0) == '/') image = image.slice(1, image.length)[1]
+                                    
+                                }
+                                self.images.push(self.url + image)
+                            }
+                        }
+                        if (i == $('*').length - 1) callback();
+                    });
+                }
+            ], function(err, res) 
+            {
+                callback(self.images);
+            });
         });
     }
 }
