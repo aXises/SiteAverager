@@ -64,3 +64,14 @@ class scrapper {
         });
     }
 }
+
+module.exports = 
+{
+    scrapePage: function (url: string, callback: any) 
+    {
+        return new scrapper(url).scrape(function (res) 
+        {
+            callback(res);
+        });
+    }
+}
