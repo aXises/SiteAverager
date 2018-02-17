@@ -3,3 +3,6 @@ extends layout
 block content
     header
         h1=title
+    form(action="analyse" method="POST")
+        input(name="query" type="text")
+        input(type="submit")
