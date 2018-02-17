@@ -26,5 +26,41 @@ class scrapper {
             });
         });
     }
-}
+    private scrapeImg(window: jsdom.DOMWindow, callback: any): void
+    {
+        var self = this;
+        var document = window.document;
 
+        async.parallel([
+            function(callback) 
+            {
+                var imgs = document.querySelectorAll('img');
+                Array.prototype.forEach.call(imgs, function(elem, i)
+                {
+                    self.images.push(elem.getAttribute('src'));
+                    if (i == imgs.length - 1) callback();
+                });
+            },
+            function(callback)
+            {
+                var elements = document.querySelectorAll('*');
+                Array.prototype.forEach.call(elements, function(elem, i)
+                {
+                    var image = window.getComputedStyle(elem).backgroundImage;
+                    if (image && image != 'none')
+                    {
+                        if (image.slice(4, 8) == 'http')
+                        {
+                            self.images.push(image.split('(')[1].split(')')[0]);
+
+                        }
+                    }
+                    if (i == elements.length - 1) callback();
+                });
+            }
+        ], function(err, res) 
+        {
+            callback(self.images);
+        });
+    }
+}
