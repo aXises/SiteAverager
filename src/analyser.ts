@@ -2,6 +2,7 @@ import * as request from 'request';
 import * as async from 'async';
 import * as jsdom from 'jsdom';
 import * as jquery from 'jquery';
+import * as pythonShell from 'python-shell';
 
 class scrapper
 {
