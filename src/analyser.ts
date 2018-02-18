@@ -72,11 +72,9 @@ class scrapper
                             else
                             {
                                 image = image.slice(4, image.length - 1)
-
-                                if (self.url.charAt(self.url.length) == '/')
+                                if (self.url.charAt(self.url.length - 1) == '/')
                                 {
-                                    if (image.charAt(0) == '/') image = image.slice(1, image.length)[1]
-                                    
+                                    if (image.charAt(0) == '/') image = image.slice(1, image.length)
                                 }
                                 self.images.push(self.url + image)
                             }
