@@ -18,7 +18,7 @@ class imageAvg implements imageData
     format: string;
     averageRGB: Array<number>;
     size: Array<Int32Array>;
-    public constructor(data)
+    public constructor(data: any)
     {
         this.url = data.image;
         this.format = data.prop.format;
@@ -117,7 +117,7 @@ class averager
     private images: Array<string>;
     private imageData: Array<any>;
     private shell: pythonShell;
-    public constructor(images)
+    public constructor(images: Array<string>)
     {
         this.images = images
         this.imageData = [];
