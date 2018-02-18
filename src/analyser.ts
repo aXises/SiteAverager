@@ -4,6 +4,29 @@ import * as jsdom from 'jsdom';
 import * as jquery from 'jquery';
 import * as pythonShell from 'python-shell';
 
+interface imageData
+{
+    readonly url: string
+    readonly format: string
+    readonly averageRGB: Array<number>
+    readonly size: Array<Int32Array>
+}
+
+class imageAvg implements imageData
+{
+    url: string
+    format: string
+    averageRGB: Array<number>
+    size: Array<Int32Array>
+    public constructor(data)
+    {
+        this.url = data.image;
+        this.format = data.prop.format;
+        this.averageRGB = data.averageRGB;
+        this.size = data.prop.size;
+    }
+}
+
 class scrapper
 {
     private url: string;
