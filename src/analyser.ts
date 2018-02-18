@@ -3,7 +3,8 @@ import * as async from 'async';
 import * as jsdom from 'jsdom';
 import * as jquery from 'jquery';
 
-class scrapper {
+class scrapper
+{
     private url: string;
     private images: Array<string>;
     public constructor(query: string)
@@ -11,7 +12,7 @@ class scrapper {
         this.url = query;
         this.images = [];
     }
-    public scrape(callback: any)
+    public scrape(callback: any): void
     {
         var self = this;
         request({
@@ -39,8 +40,20 @@ class scrapper {
                 {
                     if ($('img').length == 0) callback();
                     $('img').each(function (i) {
-                        var imgs = $(this);
-                        self.images.push($(this).attr('src'));
+                        var image = $(this).attr('src');
+
+                        if (image.slice(0, 4) == 'http')
+                        {
+                            self.images.push(image);
+                        } else
+                        {
+                            if (self.url.charAt(self.url.length - 1) == '/')
+                            {
+                                if (image.charAt(0) == '/') image = image.slice(1, image.length)
+                            }
+                            
+                            self.images.push(self.url + image)
+                        }
                         if (i == $('img').length - 1) callback();
                     });
                 },
