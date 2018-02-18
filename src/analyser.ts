@@ -123,6 +123,31 @@ class averager
         this.imageData = [];
         this.shell = new pythonShell('./src/average.py');
     }
+    public average(callback: any): void
+    {
+        var self = this;
+        self.images.forEach(function(image)
+        {
+            self.pythonSend(image);
+        });
+        self.shell.on('message', function (res)
+        {
+            res = JSON.parse(res)
+            if (res.err == "None") self.imageData.push(new imageAvg(res));
+        });
+        self.shell.end(function (err, code, signal)
+        {
+            if (err) throw err;
+            console.log(self.imageData)
+            callback(self.imageData);
+        });
+    }
+    private pythonSend(data: string): void
+    {
+        this.shell.send(data);
+    }
+}
+
 module.exports = 
 {
     scrapePage: function (url: string, callback: any) 
