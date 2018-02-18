@@ -112,6 +112,17 @@ class scrapper
     }
 }
 
+class averager
+{
+    private images: Array<string>;
+    private imageData: Array<any>;
+    private shell: pythonShell;
+    public constructor(images)
+    {
+        this.images = images
+        this.imageData = [];
+        this.shell = new pythonShell('./src/average.py');
+    }
 module.exports = 
 {
     scrapePage: function (url: string, callback: any) 
