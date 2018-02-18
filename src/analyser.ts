@@ -150,9 +150,16 @@ class averager
 
 module.exports = 
 {
-    scrapePage: function (url: string, callback: any) 
+    scrapePage: function (url: string, callback: any): void
     {
-        return new scrapper(url).scrape(function (res) 
+        new scrapper(url).scrape(function (res) 
+        {
+            callback(res);
+        });
+    },
+    averageImages: function (images: Array<string>, callback: any): void
+    {
+        new averager(images).average(function (res)
         {
             callback(res);
         });
