@@ -6,18 +6,18 @@ import * as pythonShell from 'python-shell';
 
 interface imageData
 {
-    readonly url: string
-    readonly format: string
-    readonly averageRGB: Array<number>
-    readonly size: Array<Int32Array>
+    readonly url: string;
+    readonly format: string;
+    readonly averageRGB: Array<number>;
+    readonly size: Array<Int32Array>;
 }
 
 class imageAvg implements imageData
 {
-    url: string
-    format: string
-    averageRGB: Array<number>
-    size: Array<Int32Array>
+    url: string;
+    format: string;
+    averageRGB: Array<number>;
+    size: Array<Int32Array>;
     public constructor(data)
     {
         this.url = data.image;
@@ -132,7 +132,7 @@ class averager
         });
         self.shell.on('message', function (res)
         {
-            res = JSON.parse(res)
+            res = JSON.parse(res);
             if (res.err == "None") self.imageData.push(new imageAvg(res));
         });
         self.shell.end(function (err, code, signal)
