@@ -42,18 +42,16 @@ class scrapper
                     if ($('img').length == 0) callback();
                     $('img').each(function (i) {
                         var image = $(this).attr('src');
-
                         if (image.slice(0, 4) == 'http')
                         {
-                            self.images.push(image);
+                            if (self.images.indexOf(image) == -1) self.images.push(image);
                         } else
                         {
                             if (self.url.charAt(self.url.length - 1) == '/')
                             {
                                 if (image.charAt(0) == '/') image = image.slice(1, image.length)
                             }
-                            
-                            self.images.push(self.url + image)
+                            if (self.images.indexOf(self.url + image) == -1) self.images.push(self.url + image)
                         }
                         if (i == $('img').length - 1) callback();
                     });
@@ -67,7 +65,8 @@ class scrapper
                         {
                             if (image.slice(4, 8) == 'http')
                             {
-                                self.images.push(image.split('(')[1].split(')')[0]);
+                                image = image.split('(')[1].split(')')[0]
+                                if (self.images.indexOf(image) == -1) self.images.push(image);
                             }
                             else
                             {
@@ -76,7 +75,7 @@ class scrapper
                                 {
                                     if (image.charAt(0) == '/') image = image.slice(1, image.length)
                                 }
-                                self.images.push(self.url + image)
+                                if (self.images.indexOf(self.url + image) == -1) self.images.push(self.url + image)
                             }
                         }
                         if (i == $('*').length - 1) callback();
