@@ -5,10 +5,12 @@ var analyser = require('../src/analyser')
 
 router.post('/', function (req, res, next) 
 {
-    analyser.scrapePage(req.body.query, function (results) 
+    analyser.scrapePage(req.body.query, function (result) 
     {
-        res.render('result', {
-            'results': results
+        analyser.averageImages(result, function(result) {
+            res.render('result', {
+                'results': result
+            });
         });
     });
 });
