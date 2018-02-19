@@ -1,13 +1,14 @@
 extends layout
 
 block content
-    header
-        h1= "Temporary results"
-        h2= "Overall average: " + totalAvg
-    each result in results
-        p= result.averageRGB
-        p= result.size
-        p= result.format
-        p= result.url
-        div(style="width: 50px; height: 50px; background-color: rgb(" + result.averageRGB + ");" )
-        br
+    main#result
+        #overallRGB(style="background-color: rgb(" + totalAvg + ");")
+        #resultRGB
+            each result in results
+                div.block(style="background-color: rgb(" + result.averageRGB + ");")
+        #overallInfo
+            p= "R: " + totalAvg[0]
+            p= "G: " + totalAvg[1]
+            p= "B: " + totalAvg[2]
+            p= "Analysed " + results.length + " images"
+    script(type="text/javascript" src="/scripts/result.js")
