@@ -117,11 +117,13 @@ class averager
     private images: Array<string>;
     private imageData: Array<any>;
     private shell: pythonShell;
+    private overallAvg: Array<number>;
     public constructor(images: Array<string>)
     {
         this.images = images
         this.imageData = [];
         this.shell = new pythonShell('./src/average.py');
+        this.overallAvg = [0, 0, 0];
     }
     public average(callback: any): void
     {
@@ -145,6 +147,14 @@ class averager
     private pythonSend(data: string): void
     {
         this.shell.send(data);
+    }
+    private averageOverall(image: imageAvg, callback: any)
+    {
+        for (var i = 0; i < this.overallAvg.length; i++)
+        {
+            this.overallAvg[i] += image.averageRGB[i] / this.images.length;
+            if (i == this.overallAvg.length - 1) callback();
+        }
     }
 }
 
