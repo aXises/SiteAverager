@@ -134,14 +134,22 @@ class averager
         });
         self.shell.on('message', function (res)
         {
-            res = JSON.parse(res);
-            if (res.err == "None") self.imageData.push(new imageAvg(res));
+            res = JSON.parse(res)
+            if (res.err == "None")
+            {
+                var img = new imageAvg(res);
+                self.averageOverall(img, function ()
+                {
+                     self.imageData.push(img);
+                }); 
+            }
         });
         self.shell.end(function (err, code, signal)
         {
             if (err) throw err;
-            console.log(self.imageData)
-            callback(self.imageData);
+            self.roundArr(self.overallAvg, false, function () {
+                callback(self.imageData, self.overallAvg);
+            });
         });
     }
     private pythonSend(data: string): void
@@ -179,9 +187,9 @@ module.exports =
     },
     averageImages: function (images: Array<string>, callback: any): void
     {
-        new averager(images).average(function (res)
+        new averager(images).average(function (imgAvg, totalAvg)
         {
-            callback(res);
+            callback(imgAvg, totalAvg);
         });
     }
 }
