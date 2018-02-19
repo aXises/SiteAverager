@@ -1,0 +1,21 @@
+{
+  "name": "siteaverager",
+  "description": "Averages colour on a given site/query",
+  "main": "app.js",
+  "authors": [
+    "Xinyi Li"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/aXises/SiteAverager",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^4.0.0",
+    "reset-css": "^2.2.1"
+  }
+}
