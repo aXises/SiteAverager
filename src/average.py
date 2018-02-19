@@ -35,7 +35,8 @@ def average(image):
         ar += x[i][0]
         ag += x[i][1]
         ab += x[i][2]
-    result["averageRGB"] = [ar / len(x), ag / len(x), ab / len(x)]
+        #if i - r == acc: sortSelf(r)
+    result["averageRGB"] = [round(ar / len(x)), round(ag / len(x)), round(ab / len(x))]
     result["prop"] = {
         "size": [file.size[0], file.size[1]],
         "format": file.format
