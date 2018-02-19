@@ -3,6 +3,7 @@ var path = require('path');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var lessMiddleware = require('less-middleware');
 var package = require('./package.json');
 
 var app = express();
@@ -16,7 +17,8 @@ app.locals.appVersion = package.version;
 app.locals.appAuthor = package.author;
   
 // middleware setup
-
+app.use(lessMiddleware(__dirname + '/public'));
+app.use(express.static(__dirname + '/public'));
 app.use('/bower_components', express.static(__dirname + '/bower_components'));
 
 // view engine setup
