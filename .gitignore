@@ -86,4 +86,6 @@ $RECYCLE.BIN/
 
 # Custom
 src/*.js
+public/styles/*.css
+public/scripts/*.js
 bower_components
