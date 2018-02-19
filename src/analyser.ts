@@ -156,6 +156,16 @@ class averager
             if (i == this.overallAvg.length - 1) callback();
         }
     }
+    public roundArr(arr: Array<any>, callbackVal: boolean, callback: any)
+    {
+        if (!callbackVal) callbackVal = false;
+        for (var i = 0; i < arr.length; i++)
+        {
+            arr[i] = Math.round(arr[i]);
+            if (i == arr.length - 1 && !callbackVal) callback();
+            else if (i == arr.length - 1) callback(arr);
+        }
+    }
 }
 
 module.exports = 
