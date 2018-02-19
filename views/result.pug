@@ -3,6 +3,7 @@ extends layout
 block content
     header
         h1= "Temporary results"
+        h2= "Overall average: " + totalAvg
     each result in results
         p= result.averageRGB
         p= result.size
