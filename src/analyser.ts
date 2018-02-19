@@ -9,7 +9,7 @@ interface imageData
     readonly url: string;
     readonly format: string;
     readonly averageRGB: Array<number>;
-    readonly size: Array<Int32Array>;
+    readonly size: Array<number>;
 }
 
 class imageAvg implements imageData
@@ -17,7 +17,7 @@ class imageAvg implements imageData
     url: string;
     format: string;
     averageRGB: Array<number>;
-    size: Array<Int32Array>;
+    size: Array<number>;
     public constructor(data: any)
     {
         this.url = data.image;
