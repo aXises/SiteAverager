@@ -1,8 +1,11 @@
 extends layout
 
 block content
-    header
-        h1=title
-    form(action="analyse" method="POST")
-        input(name="query" type="text")
-        input(type="submit")
+    main#index
+        header
+            h1=title
+        form(action="analyse" method="POST")
+            div.form-group
+                input.form-control(name="query" type="text" placeholder="www.google.com")
+            div.form-group
+                input.form-control(type="submit")
