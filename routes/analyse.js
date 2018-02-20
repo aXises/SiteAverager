@@ -15,13 +15,16 @@ router.get('/', function (req, res, next)
             });
             return;
         }
-        analyser.averageImages(result, function(imgAvg, totalAvg) 
+        analyser.averageImages(result, function(imgAvg, imgProp) 
         {
             res.render('result', {
                 'results': imgAvg,
-                'totalAvg': totalAvg,
                 'timeTaken': Date.now() - initTime,
-                'lum': analyser.getLuminance(totalAvg)
+                'lum': analyser.getLuminance(imgProp.overallAvg),
+                'prop': {
+                    'size': imgProp.totalPixels,
+                    'averageRGB': imgProp.overallAvg
+                }
             });
         });
     });

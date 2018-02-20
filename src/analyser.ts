@@ -122,13 +122,16 @@ class averager
     private images: Array<string>;
     private imageData: Array<any>;
     private shell: pythonShell;
-    private overallAvg: Array<number>;
+    private imageDataProp: any;
     public constructor(images: Array<string>)
     {
         this.images = images
         this.imageData = [];
         this.shell = new pythonShell('./src/average.py');
-        this.overallAvg = [0, 0, 0];
+        this.imageDataProp = {
+            'overallAvg': [0, 0, 0],
+            'totalPixels': [0, 0]
+        };
     }
     public average(callback: any): void
     {
@@ -143,17 +146,29 @@ class averager
             if (res.err == "None")
             {
                 var img = new imageAvg(res);
-                self.averageOverall(img, function ()
-                {
-                     self.imageData.push(img);
-                }); 
+                async.parallel([
+                    function (callback) {
+                        self.averageOverall(img, function () 
+                        {
+                            callback();
+                        });
+                    },
+                    function (callback) {
+                        self.totalPixel(img, function () 
+                        {
+                            callback();
+                        });
+                    }
+                ], function () {
+                    self.imageData.push(img);
+                });
             }
         });
         self.shell.end(function (err, code, signal)
         {
             if (err) throw err;
-            self.roundArr(self.overallAvg, false, function () {
-                callback(self.imageData, self.overallAvg);
+            self.roundArr(self.imageDataProp.overallAvg, false, function () {
+                callback(self.imageData, self.imageDataProp);
             });
         });
     }
@@ -161,12 +176,22 @@ class averager
     {
         this.shell.send(data);
     }
-    private averageOverall(image: imageAvg, callback: any): void
+    private averageOverall(image: imageAvg, callback: any): any
     {
-        for (var i = 0; i < this.overallAvg.length; i++)
+        for (var i = 0; i < this.imageDataProp.overallAvg.length; i++)
         {
-            this.overallAvg[i] += image.averageRGB[i] / this.images.length;
-            if (i == this.overallAvg.length - 1) callback();
+            this.imageDataProp.overallAvg[i] += image.averageRGB[i] / this.images.length;
+            if (i == this.imageDataProp.overallAvg.length - 1)
+                callback();
+        }
+    }
+    private totalPixel(image: imageAvg, callback: any): any
+    {
+        for (var i = 0; i < this.imageDataProp.totalPixels.length; i++)
+        {
+            this.imageDataProp.totalPixels[i] += image.size[i];
+            if (i == this.imageDataProp.totalPixels.length - 1)
+                callback();
         }
     }
     public roundArr(arr: Array<any>, callbackVal: boolean, callback: any): void
@@ -181,6 +206,11 @@ class averager
     }
 }
 
+class colorMode
+{
+
+}
+
 module.exports = 
 {
     scrapePage: function (url: string, callback: any): void
@@ -192,9 +222,9 @@ module.exports =
     },
     averageImages: function (images: Array<string>, callback: any): void
     {
-        new averager(images).average(function (imgAvg, totalAvg)
+        new averager(images).average(function (imgAvg, imgProp)
         {
-            callback(imgAvg, totalAvg);
+            callback(imgAvg, imgProp);
         });
     },
     getLuminance: function(rgb): number
