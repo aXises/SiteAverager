@@ -5,6 +5,7 @@ var analyser = require('../src/analyser')
 
 router.get('/', function (req, res, next) 
 {
+    var initTime = Date.now();
     analyser.scrapePage(req.query.query, function (result) 
     {
         if (result.code && result.errno) 
@@ -18,7 +19,8 @@ router.get('/', function (req, res, next)
         {
             res.render('result', {
                 'results': imgAvg,
-                'totalAvg': totalAvg
+                'totalAvg': totalAvg,
+                'timeTaken': Date.now() - initTime
             });
         });
     });
