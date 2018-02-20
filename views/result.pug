@@ -7,8 +7,10 @@ block content
             each result in results
                 div.block(style="background-color: rgb(" + result.averageRGB + ");")
         #overallInfo
-            p= "R: " + totalAvg[0]
-            p= "G: " + totalAvg[1]
-            p= "B: " + totalAvg[2]
-            p= "Analysed " + results.length + " images"
+            p= "RGB: " + totalAvg
+            - var text = "Analysed " + results.length + " images" + " in " + timeTaken * 0.001 + " seconds"
+            - if (results.length == 0)
+                - text = "No images detected"
+            - else if (results.length == 1) text = "Analysed " + results.length + " image" + " in " + timeTaken * 0.001 + " seconds"
+            p= text
     script(type="text/javascript" src="/scripts/result.js")
