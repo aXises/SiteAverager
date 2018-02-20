@@ -7,7 +7,15 @@ router.get('/', function (req, res, next)
 {
     analyser.scrapePage(req.query.query, function (result) 
     {
-        analyser.averageImages(result, function(imgAvg, totalAvg) {
+        if (result.code && result.errno) 
+        {
+            res.render('error', {
+                'error': result
+            });
+            return;
+        }
+        analyser.averageImages(result, function(imgAvg, totalAvg) 
+        {
             res.render('result', {
                 'results': imgAvg,
                 'totalAvg': totalAvg

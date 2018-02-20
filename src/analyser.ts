@@ -39,6 +39,7 @@ class scrapper
     public scrape(callback: any): void
     {
         var self = this;
+        if (self.url.slice(0, 4) != 'http') self.url = 'http://' + self.url
         request({
             url: self.url,
             headers: {
@@ -46,10 +47,14 @@ class scrapper
             }
         }, function(err, res, site)
         {
-            if (err) return err;
-            self.scrapeImg(new jsdom.JSDOM(site).window, function (res) {
-                callback(res);
-            });
+            if (err) callback(err);
+            else
+            {
+                self.scrapeImg(new jsdom.JSDOM(site).window, function (res) 
+                {
+                    callback(res);
+                });
+            }
         });
     }
     private scrapeImg(window: jsdom.DOMWindow, callback: any): void
@@ -156,7 +161,7 @@ class averager
     {
         this.shell.send(data);
     }
-    private averageOverall(image: imageAvg, callback: any)
+    private averageOverall(image: imageAvg, callback: any): void
     {
         for (var i = 0; i < this.overallAvg.length; i++)
         {
@@ -164,7 +169,7 @@ class averager
             if (i == this.overallAvg.length - 1) callback();
         }
     }
-    public roundArr(arr: Array<any>, callbackVal: boolean, callback: any)
+    public roundArr(arr: Array<any>, callbackVal: boolean, callback: any): void
     {
         if (!callbackVal) callbackVal = false;
         for (var i = 0; i < arr.length; i++)
