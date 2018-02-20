@@ -196,5 +196,9 @@ module.exports =
         {
             callback(imgAvg, totalAvg);
         });
+    },
+    getLuminance: function(rgb): number
+    {
+        return Math.sqrt(299 * rgb[0] + 587 * rgb[1] + 144 * rgb[2]) / 1000;
     }
 }

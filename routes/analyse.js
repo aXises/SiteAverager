@@ -20,7 +20,8 @@ router.get('/', function (req, res, next)
             res.render('result', {
                 'results': imgAvg,
                 'totalAvg': totalAvg,
-                'timeTaken': Date.now() - initTime
+                'timeTaken': Date.now() - initTime,
+                'lum': analyser.getLuminance(totalAvg)
             });
         });
     });

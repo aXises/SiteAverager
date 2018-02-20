@@ -6,11 +6,18 @@ block content
         #resultRGB
             each result in results
                 div.block(style="background-color: rgb(" + result.averageRGB + ");")
-        #overallInfo
-            p= "RGB: " + totalAvg
-            - var text = "Analysed " + results.length + " images" + " in " + timeTaken * 0.001 + " seconds"
-            - if (results.length == 0)
-                - text = "No images detected"
-            - else if (results.length == 1) text = "Analysed " + results.length + " image" + " in " + timeTaken * 0.001 + " seconds"
-            p= text
+        - if (lum < 160)
+            #overallInfo.bright
+                +info
+        - else
+            #overallInfo
+                +info
     script(type="text/javascript" src="/scripts/result.js")
+
+mixin info
+    p= "RGB: " + totalAvg
+    - var text = "Analysed " + results.length + " images" + " in " + (timeTaken * 0.001).toFixed(2) + " seconds"
+    - if (results.length == 0)
+        - text = "No images detected"
+    - else if (results.length == 1) text = "Analysed " + results.length + " image" + " in " + (timeTaken * 0.001).toFixed(2) + " seconds"
+    p= text
