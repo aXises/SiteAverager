@@ -6,7 +6,7 @@ var analyser = require('../src/analyser')
 router.get('/', function (req, res, next) 
 {
     var initTime = Date.now();
-    analyser.scrapePage(req.query.query, function (result) 
+    analyser.scrapePage(decodeURIComponent(req.query.query), function (result) 
     {
         if (result.code && result.errno) 
         {
