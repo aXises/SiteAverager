@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node ./bin/www",
     "test": "mocha",
-    "build": "tsc && coffee -w -c .",
-    "postinstall": "bower install"
+    "build": "tsc && coffee -c .",
+    "postinstall": "bower install && tsc && coffee -c ."
   },
   "repository": {
     "type": "git",
@@ -20,6 +20,10 @@
   },
   "homepage": "https://github.com/aXises/SiteAverager#readme",
   "dependencies": {
+    "@types/async": "^2.0.47",
+    "@types/jsdom": "^11.0.4",
+    "@types/node": "^9.4.6",
+    "@types/request": "^2.47.0",
     "async": "^2.6.0",
     "body-parser": "^1.18.2",
     "bower": "^1.8.2",
@@ -35,11 +39,5 @@
     "python-shell": "^0.5.0",
     "request": "^2.83.0",
     "typescript": "^2.7.1"
-  },
-  "devDependencies": {
-    "@types/async": "^2.0.47",
-    "@types/jsdom": "^11.0.4",
-    "@types/node": "^9.4.6",
-    "@types/request": "^2.47.0"
   }
 }
