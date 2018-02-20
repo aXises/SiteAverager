@@ -3,9 +3,9 @@ router = express.Router();
 
 var analyser = require('../src/analyser')
 
-router.post('/', function (req, res, next) 
+router.get('/', function (req, res, next) 
 {
-    analyser.scrapePage(req.body.query, function (result) 
+    analyser.scrapePage(req.query.query, function (result) 
     {
         analyser.averageImages(result, function(imgAvg, totalAvg) {
             res.render('result', {
