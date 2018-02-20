@@ -5,7 +5,9 @@
   "main": "app.js",
   "scripts": {
     "start": "node ./bin/www",
-    "test": "mocha"
+    "test": "mocha",
+    "build": "tsc && coffee -w -c .",
+    "postinstall": "bower install"
   },
   "repository": {
     "type": "git",
