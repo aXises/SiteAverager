@@ -1,5 +1,9 @@
 $(document).ready ->
     $('form').submit (e) ->
         e.preventDefault()
-        window.location.href = '/analyse?query=' + encodeURIComponent $( "input:first" ).val()
+        value = $( 'input:first' ).val()
+        if value == ''
+            $( 'input:first' ).addClass('is-invalid')
+            return
+        window.location.href = '/analyse?query=' + encodeURIComponent value
         
