@@ -47,7 +47,7 @@ class scrapper
             }
         }, function(err, res, site)
         {
-            if (err) callback(err);
+            if (err) callback({'err': err});
             else
             {
                 self.scrapeImg(new jsdom.JSDOM(site).window, function (res) 

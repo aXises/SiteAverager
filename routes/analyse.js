@@ -8,10 +8,14 @@ router.get('/', function (req, res, next)
     var initTime = Date.now();
     analyser.scrapePage(decodeURIComponent(req.query.query), function (result) 
     {
-        if (result.code && result.errno) 
+        if (result.err)
         {
             res.render('error', {
-                'error': result
+                'message': 'Analyser error',
+                'error': {
+                    'status': 404,
+                    'stack': result.err
+                }
             });
             return;
         }
