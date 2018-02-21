@@ -12,12 +12,17 @@ interface imageData
     readonly size: Array<number>;
 }
 
+/** A class holding properties of a processed image. */
 class imageAvg implements imageData
 {
     url: string;
     format: string;
     averageRGB: Array<number>;
     size: Array<number>;
+
+    /** @constructor
+     * @param {object} data - Properties of the processed image.
+     */
     public constructor(data: any)
     {
         this.url = data.image;
@@ -27,15 +32,24 @@ class imageAvg implements imageData
     }
 }
 
+/** A class to scrape web pages */
 class scrapper
 {
     private url: string;
     private images: Array<string>;
+
+    /** @constructor
+     * @param {string} query - The url of the page to scrape.
+     */
     public constructor(query: string)
     {
         this.url = query;
         this.images = [];
     }
+
+    /**
+     * Method to scrape the entire page to generate a window.
+     */
     public scrape(callback: any): void
     {
         var self = this;
@@ -57,6 +71,10 @@ class scrapper
             }
         });
     }
+
+    /**
+     * Method find all images in a window.
+     */
     private scrapeImg(window: jsdom.DOMWindow, callback: any): void
     {
         var self = this;
@@ -117,12 +135,17 @@ class scrapper
     }
 }
 
+/** A class to process and average images */
 class averager
 {
     private images: Array<string>;
     private imageData: Array<any>;
     private shell: pythonShell;
     private imageDataProp: any;
+
+    /** @constructor
+     * @param {array} images - A array of image urls to process.
+     */
     public constructor(images: Array<string>)
     {
         this.images = images
@@ -133,6 +156,10 @@ class averager
             'totalPixels': [0, 0]
         };
     }
+
+    /**
+     * Method to average a image. Data is sent to python via python shell for processing.
+     */
     public average(callback: any): void
     {
         var self = this;
@@ -172,10 +199,20 @@ class averager
             });
         });
     }
+
+    /**
+     * Sends a string of text to python.
+     * @param {string} data - The data to send.
+     */
     private pythonSend(data: string): void
     {
         this.shell.send(data);
     }
+
+    /**
+     * Gets the overall average RGB of the query.
+     * @param {imageAvg} image - Processed image data to add to the overall.
+     */
     private averageOverall(image: imageAvg, callback: any): any
     {
         for (var i = 0; i < this.imageDataProp.overallAvg.length; i++)
@@ -185,6 +222,11 @@ class averager
                 callback();
         }
     }
+
+    /**
+     * Gets the total pixels analysed in the query.
+     * @param {imageAvg} image - Processed image data to add to the overall.
+     */
     private totalPixel(image: imageAvg, callback: any): any
     {
         for (var i = 0; i < this.imageDataProp.totalPixels.length; i++)
@@ -194,6 +236,12 @@ class averager
                 callback();
         }
     }
+
+    /**
+     * Rounds a array of values.
+     * @param {array} arr - The array to iterate.
+     * @param {boolean} callbackVal - Whether to callback a value.
+     */
     public roundArr(arr: Array<any>, callbackVal: boolean, callback: any): void
     {
         if (!callbackVal) callbackVal = false;

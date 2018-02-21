@@ -4,7 +4,7 @@ import json
 from io import BytesIO
 from PIL import Image
 
-
+# Averages the RGB values on a given image
 def average(image):
     file = None
     err = None
@@ -35,7 +35,6 @@ def average(image):
         ar += x[i][0]
         ag += x[i][1]
         ab += x[i][2]
-        #if i - r == acc: sortSelf(r)
     result["averageRGB"] = [round(ar / len(x)), round(ag / len(x)), round(ab / len(x))]
     result["prop"] = {
         "size": [file.size[0], file.size[1]],
