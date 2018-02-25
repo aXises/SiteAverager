@@ -23,6 +23,17 @@ interface colourModeData
     toCMY(callback: any): void;
     toCMYK(callback: any): void;
     toHSL(callback: any): void;
+    /** Converts RGB to its hexdecimal counter part. */
+    public toHex(callback: any)
+    {
+        for (var i = 0; i < this.averageRGB.length; i++)
+        {
+            var hex = this.averageRGB[i].toString(16);
+            this.hex += hex.length == 1 ? "0" + hex: hex;
+            if (i == this.averageRGB.length - 1)
+                callback();
+        }
+    }
 }
 /** A class holding properties of a processed image. */
 class imageAvg implements imageData
