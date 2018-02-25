@@ -23,6 +23,23 @@ interface colourModeData
     toCMY(callback: any): void;
     toCMYK(callback: any): void;
     toHSL(callback: any): void;
+/**
+ * A class holding other colour properties of a imgAvg.
+ */
+class colourMode implements colourModeData
+{
+    public averageRGB: Array<number>;
+    public CMY: Array<number>;
+    public CMYK: Array<number>;
+    public HSL: Array<number>;
+    public hex: string;
+    public constructor(RGB: Array<number>)
+    {
+        this.averageRGB = RGB;
+        this.hex = '';
+        this.CMY = [0, 0, 0];
+        this.CMYK = [0, 0, 0, 0];
+    }
     /** Converts RGB to its hexdecimal counter part. */
     public toHex(callback: any)
     {
