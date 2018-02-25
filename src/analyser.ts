@@ -14,6 +14,7 @@ interface imageData
 
 interface colourModeData
 {
+    readonly RGB: Array<number>;
     CMY: Array<number>;
     CMYK: Array<number>;
     HSL: Array<number>;
@@ -28,14 +29,14 @@ interface colourModeData
  */
 class colourMode implements colourModeData
 {
-    public averageRGB: Array<number>;
+    public RGB: Array<number>;
     public CMY: Array<number>;
     public CMYK: Array<number>;
     public HSL: Array<number>;
     public hex: string;
     public constructor(RGB: Array<number>)
     {
-        this.averageRGB = RGB;
+        this.RGB = RGB;
         this.hex = '';
         this.CMY = [0, 0, 0];
         this.CMYK = [0, 0, 0, 0];
@@ -43,23 +44,22 @@ class colourMode implements colourModeData
     /** Converts RGB to its hexdecimal counter part. */
     public toHex(callback: any)
     {
-        for (var i = 0; i < this.averageRGB.length; i++)
+        for (var i = 0; i < this.RGB.length; i++)
         {
-            var hex = this.averageRGB[i].toString(16);
+            var hex = this.RGB[i].toString(16);
             if (typeof(hex) != 'number')
                 hex = hex.toUpperCase();
             this.hex += hex.length == 1 ? "0" + hex: hex;
-            if (i == this.averageRGB.length - 1)
+            if (i == this.RGB.length - 1)
                 callback();
         }
     }
     /** Converts RGB to CMY. */
     public toCMY(callback: any)
     {
-        for (var i = 0; i < this.averageRGB.length; i++)
+        for (var i = 0; i < this.RGB.length; i++)
         {
-            this.CMY[i] = 1 - (this.averageRGB[i] / 255);
-            if (i == this.averageRGB.length - 1)
+            this.CMY[i] = 1 - (this.RGB[i] / 255);
                 callback(this.CMY);
         }
     }
