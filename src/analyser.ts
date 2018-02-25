@@ -66,7 +66,8 @@ class colourMode implements colourModeData
     public toCMYK(callback: any)
     {
         var self = this;
-        self.toCMY(function (CMY) {
+        self.toCMY(function (CMY) 
+        {
             if (CMY[0] == 0 && CMY[1] == 0 && CMY[2] == 0)
             {
                 self.CMYK[3] = 1;
@@ -325,11 +326,6 @@ class averager
             else if (i == arr.length - 1) callback(arr);
         }
     }
-}
-
-class colorMode
-{
-
 }
 
 module.exports = 
