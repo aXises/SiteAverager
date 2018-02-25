@@ -62,6 +62,28 @@ class colourMode implements colourModeData
         }
     }
 
+    /** Coverts RGB to CMYK. */
+    public toCMYK(callback: any)
+    {
+        var self = this;
+        self.toCMY(function (CMY) {
+            if (CMY[0] == 0 && CMY[1] == 0 && CMY[2] == 0)
+            {
+                self.CMYK[3] = 1;
+                return;
+            }
+            var k = Math.min(CMY[0], Math.min(CMY[1], CMY[2]));
+            for (var i = 0; i < CMY.length; i++)
+            {
+                self.CMYK[i] = (CMY[i] - k) / (1 - k)
+                if (i == CMY.length - 1)
+                {
+                    self.CMYK[CMY.length] = k;
+                    callback();
+                }
+            }
+        });
+    }
 }
 /** A class holding properties of a processed image. */
 class imageAvg implements imageData
