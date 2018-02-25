@@ -12,6 +12,18 @@ interface imageData
     readonly size: Array<number>;
 }
 
+interface colourModeData
+{
+    CMY: Array<number>;
+    CMYK: Array<number>;
+    HSL: Array<number>;
+    hex: string;
+    toAll(callback: any): void;
+    toHex(callback: any): void;
+    toCMY(callback: any): void;
+    toCMYK(callback: any): void;
+    toHSL(callback: any): void;
+}
 /** A class holding properties of a processed image. */
 class imageAvg implements imageData
 {
