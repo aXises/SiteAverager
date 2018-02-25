@@ -21,6 +21,7 @@
   "dependencies": {
     "@types/async": "^2.0.47",
     "@types/jsdom": "^11.0.4",
+    "@types/mocha": "^2.2.48",
     "@types/node": "^9.4.6",
     "@types/request": "^2.47.0",
     "async": "^2.6.0",
