@@ -423,5 +423,12 @@ module.exports =
     getLuminance: function(rgb): number
     {
         return Math.sqrt(299 * rgb[0] + 587 * rgb[1] + 144 * rgb[2]) / 1000;
+    },
+    getColourModes: function(rgb: Array<number>, callback: any): void
+    {
+        new colourMode(rgb).toAll(function (res) 
+        {
+            callback(res)
+        });
     }
 }
