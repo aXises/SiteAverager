@@ -46,6 +46,8 @@ class colourMode implements colourModeData
         for (var i = 0; i < this.averageRGB.length; i++)
         {
             var hex = this.averageRGB[i].toString(16);
+            if (typeof(hex) != 'number')
+                hex = hex.toUpperCase();
             this.hex += hex.length == 1 ? "0" + hex: hex;
             if (i == this.averageRGB.length - 1)
                 callback();
