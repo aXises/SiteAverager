@@ -54,12 +54,14 @@ class colourMode implements colourModeData
                 callback();
         }
     }
+
     /** Converts RGB to CMY. */
     public toCMY(callback: any)
     {
         for (var i = 0; i < this.RGB.length; i++)
         {
             this.CMY[i] = 1 - (this.RGB[i] / 255);
+            if (i == this.RGB.length - 1)
                 callback(this.CMY);
         }
     }
