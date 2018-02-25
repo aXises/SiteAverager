@@ -24,6 +24,8 @@ interface colourModeData
     toCMY(callback: any);
     toCMYK(callback: any): void;
     toHSL(callback: any): void;
+}
+
 /**
  * A class holding other colour properties of a imgAvg.
  */
@@ -34,6 +36,10 @@ class colourMode implements colourModeData
     public CMYK: Array<number>;
     public HSL: Array<number>;
     public hex: string;
+
+    /** @constructor
+     * @param {Array} RGB - Initial RGB values to convert.
+     */
     public constructor(RGB: Array<number>)
     {
         this.RGB = RGB;
@@ -44,7 +50,7 @@ class colourMode implements colourModeData
     }
 
     /** Generates all color modes for an instance. */
-    public toAll(callback: any)
+    public toAll(callback: any): void
     {
         var self = this;
         async.parallel([
@@ -83,7 +89,7 @@ class colourMode implements colourModeData
     }
     
     /** Converts RGB to its hexdecimal counter part. */
-    public toHex(callback: any)
+    public toHex(callback: any): void
     {
         for (var i = 0; i < this.RGB.length; i++)
         {
@@ -97,7 +103,7 @@ class colourMode implements colourModeData
     }
 
     /** Converts RGB to CMY. */
-    public toCMY(callback: any)
+    public toCMY(callback: any): void
     {
         for (var i = 0; i < this.RGB.length; i++)
         {
@@ -108,7 +114,7 @@ class colourMode implements colourModeData
     }
 
     /** Coverts RGB to CMYK. */
-    public toCMYK(callback: any)
+    public toCMYK(callback: any): void
     {
         var self = this;
         self.toCMY(function (CMY) 
@@ -132,7 +138,7 @@ class colourMode implements colourModeData
     }
 
     /** Converts RGB to HSL. */
-    public toHSL(callback: any)
+    public toHSL(callback: any): void
     {
         var RGB = [this.RGB[0] / 255, this.RGB[1] / 255, this.RGB[2] / 255];
         var maxRGB = Math.max(RGB[0], RGB[1], RGB[2]);
@@ -158,6 +164,7 @@ class colourMode implements colourModeData
         callback();
     }
 }
+
 /** A class holding properties of a processed image. */
 class imageAvg implements imageData
 {
@@ -220,6 +227,7 @@ class scrapper
 
     /**
      * Method find all images in a window.
+     * @param {jsdom.DOMWindow} window - A DOM accessed by jquery.
      */
     private scrapeImg(window: jsdom.DOMWindow, callback: any): void
     {
