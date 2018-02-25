@@ -40,6 +40,7 @@ class colourMode implements colourModeData
         this.hex = '';
         this.CMY = [0, 0, 0];
         this.CMYK = [0, 0, 0, 0];
+        this.HSL = [0, 0, 0];
     }
     /** Converts RGB to its hexdecimal counter part. */
     public toHex(callback: any)
@@ -88,6 +89,33 @@ class colourMode implements colourModeData
                 }
             }
         });
+    }
+
+    /** Converts RGB to HSL. */
+    public toHSL(callback: any)
+    {
+        var RGB = [this.RGB[0] / 255, this.RGB[1] / 255, this.RGB[2] / 255];
+        var maxRGB = Math.max(RGB[0], RGB[1], RGB[2]);
+        var minRGB = Math.min(RGB[0], RGB[1], RGB[2]);
+        this.HSL[2] = (maxRGB + minRGB) / 2
+        var del = maxRGB - minRGB
+        if (del == 0)
+        {
+            this.HSL[0] = this.HSL[1] = 0;
+            callback();
+            return;
+        }
+        this.HSL[1] = this.HSL[2] >= 0.5 ? del / (2 - (maxRGB + minRGB)) : del / (maxRGB + minRGB);
+        switch (maxRGB)
+        {
+            case RGB[0]: this.HSL[0] = (RGB[1] - RGB[2]) * 60 / del
+                break;
+            case RGB[1]: this.HSL[0] = (RGB[2] - RGB[0]) * 60 / del + 2;
+                break;
+            case RGB[2]: this.HSL[0] = (RGB[0] - RGB[1]) * 60 / del + 4;
+                break;
+        }
+        callback();
     }
 }
 /** A class holding properties of a processed image. */
