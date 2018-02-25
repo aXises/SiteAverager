@@ -1,0 +1,22 @@
+image:
+  - Visual Studio 2017
+environment:
+  nodejs_version: "8"
+cache:
+  - node_modules 
+  - bower_components
+install:
+  - ps: Install-Product node $env:nodejs_version
+  - npm install
+  - npm install typescript -g
+configuration: Release
+before_test:
+  - tsc
+  - tsc -v
+  - node --version
+  - npm --version
+test_script:
+  - npm test
+after_build:
+  - npm version %APPVEYOR_BUILD_VERSION% -m 'v%APPVEYOR_BUILD_VERSION%'
+build: off
