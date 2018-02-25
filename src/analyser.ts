@@ -42,6 +42,46 @@ class colourMode implements colourModeData
         this.CMYK = [0, 0, 0, 0];
         this.HSL = [0, 0, 0];
     }
+
+    /** Generates all color modes for an instance. */
+    public toAll(callback: any)
+    {
+        var self = this;
+        async.parallel([
+            function (cb)
+            {
+                self.toHex(function () 
+                {
+                    cb();
+                });
+            },
+            function (cb) 
+            {
+                self.toCMYK(function () 
+                {
+                    cb();
+                });
+
+            },
+            function (cb) 
+            {
+                self.toHSL(function () 
+                {
+                    cb();
+                })
+
+            }
+        ], function () 
+        {
+            callback({
+                'RGB': self.RGB,
+                'HEX': self.hex,
+                'CMYK': self.CMYK,
+                'HSL': self.HSL
+            });
+        });
+    }
+    
     /** Converts RGB to its hexdecimal counter part. */
     public toHex(callback: any)
     {
