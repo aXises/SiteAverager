@@ -143,6 +143,8 @@ class colourMode implements colourModeData
     {
         var RGB = [this.RGB[0] / 255, this.RGB[1] / 255, this.RGB[2] / 255];
         var dRGB = [this.RGB[0] / 255, this.RGB[1] / 255, this.RGB[2] / 255];
+        // No idea why but copying a variable and editing it modifies the original variable. 
+        // var dRGB = RGB or var RGB = this.RGB changes the cloned variable. Declaring it as an array and subbing in appropriate values seems to fix it. 
         var maxRGB = Math.max(RGB[0], RGB[1], RGB[2]);
         var minRGB = Math.min(RGB[0], RGB[1], RGB[2]);
         this.HSL[2] = (maxRGB + minRGB) / 2
