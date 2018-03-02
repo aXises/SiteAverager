@@ -149,7 +149,7 @@ class colourMode implements colourModeData
         if (del == 0)
         {
             this.HSL[0] = this.HSL[1] = 0;
-            callback();
+            callback(this.HSL);
             return;
         }
         this.HSL[1] = this.HSL[2] >= 0.5 ? del / (2 - (maxRGB + minRGB)) : del / (maxRGB + minRGB);
