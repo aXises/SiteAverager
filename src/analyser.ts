@@ -98,7 +98,7 @@ class colourMode implements colourModeData
                 hex = hex.toUpperCase();
             this.hex += hex.length == 1 ? "0" + hex: hex;
             if (i == this.RGB.length - 1)
-                callback();
+                callback(this.hex);
         }
     }
 
@@ -132,7 +132,7 @@ class colourMode implements colourModeData
                 if (i == CMY.length - 1)
                 {
                     self.CMYK[CMY.length] = k;
-                    callback();
+                    callback(self.CMYK);
                 }
             }
         });
@@ -162,7 +162,7 @@ class colourMode implements colourModeData
             case RGB[2]: this.HSL[0] = (RGB[0] - RGB[1]) * 60 / del + 4;
                 break;
         }
-        callback();
+        callback(this.HSL);
     }
 }
 
