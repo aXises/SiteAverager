@@ -62,10 +62,13 @@ describe('App', function ()
 						done();
 					});
 				});
-				colourMode.toHSL(function (HSL) 
+				it('Case ' + key + ' Converts to HSL', function (done)
 				{
-					assert.deepEqual(HSL, constBlack.HSL);
-					done();
+					colourMode.toHSL(function (HSL) 
+					{
+						assert.deepEqual(HSL, cases[key].HSL);
+						done();
+					});
 				});
 			});
 		});
