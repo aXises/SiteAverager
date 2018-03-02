@@ -439,5 +439,8 @@ module.exports =
         {
             callback(res)
         });
-    }
+    },
+    colourMode: colourMode,
+    scrapper: scrapper,
+    averager: averager
 }
