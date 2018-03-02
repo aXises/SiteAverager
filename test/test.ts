@@ -31,7 +31,7 @@ describe('App', function ()
 		after(function (done)
 		{
 			server.close();
-			done()l
+			done();
 		});
 	});
 	describe('Analyser', function ()
