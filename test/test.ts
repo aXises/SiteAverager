@@ -34,34 +34,34 @@ describe('App', function ()
 
 		describe('Colour modes', function ()
 		{
-			var colourMode = new analyser.colourMode(constBlack.RGB);
-
-			it('Converts to HEX', function (done)
+			var cases = tests.expected.colourModes.cases;
+			Object.keys(cases).forEach(function (key) 
 			{
-				colourMode.toHex(function (HEX) 
+				var colourMode = new analyser.colourMode(cases[key].RGB);
+				it('Case ' + key + ' Converts to HEX', function (done)
 				{
-					assert.equal(HEX, constBlack.HEX);
-					done();
+					colourMode.toHex(function (HEX) 
+					{
+						assert.equal(HEX, cases[key].HEX);
+						done();
+					});
 				});
-			});
-			it('Converts to CMY', function (done)
-			{
-				colourMode.toCMY(function (CMY) 
+				it('Case ' + key + ' Converts to CMY', function (done)
 				{
-					assert.deepEqual(CMY, constBlack.CMY);
-					done();
+					colourMode.toCMY(function (CMY) 
+					{
+						assert.deepEqual(CMY, cases[key].CMY);
+						done();
+					});
 				});
-			});
-			it('Converts to CMYK', function (done)
-			{
-				colourMode.toCMYK(function (CMYK) 
+				it('Case ' + key + ' Converts to CMYK', function (done)
 				{
-					assert.deepEqual(CMYK, constBlack.CMYK);
-					done();
+					colourMode.toCMYK(function (CMYK) 
+					{
+						assert.deepEqual(CMYK, cases[key].CMYK);
+						done();
+					});
 				});
-			});
-			it('Converts to HSL', function (done)
-			{
 				colourMode.toHSL(function (HSL) 
 				{
 					assert.deepEqual(HSL, constBlack.HSL);
