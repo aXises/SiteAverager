@@ -7,6 +7,9 @@ environment:
         - PYTHON: "C:\\Python36-x64"
     PIP3: C:\\Python36\Scripts\pip
 platform: x64
+init:
+    - cmd: "%PYTHON%\\python --version"
+    - cmd: "%PIP3% --version"
 cache:
     - node_modules 
     - bower_components
