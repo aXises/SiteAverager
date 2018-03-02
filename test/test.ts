@@ -1,10 +1,52 @@
 var origin = 'http://localhost:3000';
-
+var app = require('../app');
+var analyser = require('../src/analyser');
 import * as request from 'request';
 import * as assert from 'assert';
 import * as mocha from 'mocha';
 import * as http from 'http';
-import * as app from '../app'
+
+import * as tests from './tests';
+
+let constBlack = {
+	'RGB': [0, 0, 0],
+	'HEX': '000000',
+	'CMY': [1, 1, 1],
+	'CMYK': [0, 0, 0, 1],
+	'HSL': [0, 0 ,0]
+}
+
+let constWhite = {
+	'RGB': [255, 255, 255],
+	'HEX': 'ffffff',
+	'CMY': [0, 0, 0],
+	'CMYK': [0, 0, 0, 0],
+	'HSL': [0, 0 ,0]
+}
+
+let constRed = {
+	'RGB': [255, 0, 0],
+	'HEX': 'ff0000',
+	'CMY': [0, 0, 0],
+	'CMYK': [0, 0, 0, 0],
+	'HSL': [0, 0 ,0]
+}
+
+let constGreen = {
+	'RGB': [0, 255, 0],
+	'HEX': '00ff00',
+	'CMY': [0, 0, 0],
+	'CMYK': [0, 0, 0, 0],
+	'HSL': [0, 0 ,0]
+}
+
+let constBlue = {
+	'RGB': [0, 0, 255],
+	'HEX': '0000ff',
+	'CMY': [0, 0, 0],
+	'CMYK': [0, 0, 0, 0],
+	'HSL': [0, 0 ,0]
+}
 
 describe('App', function () 
 {
@@ -25,10 +67,59 @@ describe('App', function ()
 				done();
 			});
 		});
+	});
+	describe('Analyser', function ()
+	{
+		// describe('Scrapper', function ()
+		// {
+
+		// });
+		
+		// describe('Averager', function ()
+		// {
+			
+		// });
+
+		describe('Colour modes', function ()
 		{
+			var colourMode = new analyser.colourMode(constBlack.RGB);
+
+			it('Converts to HEX', function (done)
+			{
+				colourMode.toHex(function (HEX) 
+				{
+					assert.equal(HEX, constBlack.HEX);
+					done();
+				});
+			});
+			it('Converts to CMY', function (done)
+			{
+				colourMode.toCMY(function (CMY) 
+				{
+					assert.deepEqual(CMY, constBlack.CMY);
+					done();
+				});
+			});
+			it('Converts to CMYK', function (done)
+			{
+				colourMode.toCMYK(function (CMYK) 
+				{
+					assert.deepEqual(CMYK, constBlack.CMYK);
+					done();
+				});
+			});
+			it('Converts to HSL', function (done)
+			{
+				colourMode.toHSL(function (HSL) 
+				{
+					assert.deepEqual(HSL, constBlack.HSL);
+					done();
+				});
+			});
 		});
 	});
 	after(function ()
 	{
 		process.exit(0);
+	});
 });
