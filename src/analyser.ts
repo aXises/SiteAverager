@@ -119,9 +119,10 @@ class colourMode implements colourModeData
         var self = this;
         self.toCMY(function (CMY) 
         {
-            if (CMY[0] == 0 && CMY[1] == 0 && CMY[2] == 0)
+            if (CMY[0] == 1 && CMY[1] == 1 && CMY[2] == 1)
             {
-                self.CMYK[3] = 1;
+                self.CMYK = [0, 0, 0, 1];
+                callback(self.CMYK);
                 return;
             }
             var k = Math.min(CMY[0], Math.min(CMY[1], CMY[2]));
