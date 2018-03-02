@@ -13,9 +13,9 @@ describe('App', function ()
 {
 	describe('Server', function ()
 	{
+		var server = http.createServer(app);
 		before(function (done) 
 		{
-			var server = http.createServer(app);
 			server.listen('3000');
 			done();
 		});
@@ -27,6 +27,11 @@ describe('App', function ()
 				else assert.equal(200, res.statusCode);
 				done();
 			});
+		});
+		after(function (done)
+		{
+			server.close();
+			done()l
 		});
 	});
 	describe('Analyser', function ()
@@ -72,9 +77,5 @@ describe('App', function ()
 				});
 			});
 		});
-	});
-	after(function ()
-	{
-		process.exit(0);
 	});
 });
