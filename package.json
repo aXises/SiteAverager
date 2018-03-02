@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node ./bin/www",
     "test": "mocha",
-    "postinstall": "bower install && pip3 install -r requirements.txt && tsc && coffee -c ."
+    "postinstall": "bower install && tsc && coffee -c ."
   },
   "repository": {
     "type": "git",
