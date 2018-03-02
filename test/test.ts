@@ -16,7 +16,7 @@ describe('App', function ()
 			server.listen('3000');
 			done();
 		});
-		it('Server initializes', function (done)
+		it('Initializes', function (done)
 		{
 			request.get(origin, function (err, res)
 			{
