@@ -25,9 +25,10 @@ describe('App', function ()
 				done();
 			});
 		});
-		after(function ()
 		{
-			process.exit(0);
 		});
 	});
+	after(function ()
+	{
+		process.exit(0);
 });
