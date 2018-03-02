@@ -142,6 +142,7 @@ class colourMode implements colourModeData
     public toHSL(callback: any): void
     {
         var RGB = [this.RGB[0] / 255, this.RGB[1] / 255, this.RGB[2] / 255];
+        var dRGB = [this.RGB[0] / 255, this.RGB[1] / 255, this.RGB[2] / 255];
         var maxRGB = Math.max(RGB[0], RGB[1], RGB[2]);
         var minRGB = Math.min(RGB[0], RGB[1], RGB[2]);
         this.HSL[2] = (maxRGB + minRGB) / 2
@@ -153,15 +154,22 @@ class colourMode implements colourModeData
             return;
         }
         this.HSL[1] = this.HSL[2] >= 0.5 ? del / (2 - (maxRGB + minRGB)) : del / (maxRGB + minRGB);
+
+        for (var i = 0; i < dRGB.length; i++)
+        {
+            dRGB[i] = (((maxRGB - RGB[i]) / 6) + (del / 2)) / del;
+        }
         switch (maxRGB)
         {
-            case RGB[0]: this.HSL[0] = (RGB[1] - RGB[2]) * 60 / del
+            case RGB[0]: this.HSL[0] = dRGB[2] - dRGB[1];
                 break;
-            case RGB[1]: this.HSL[0] = (RGB[2] - RGB[0]) * 60 / del + 2;
+            case RGB[1]: this.HSL[0] = (1 / 3) + dRGB[0] - dRGB[2];
                 break;
-            case RGB[2]: this.HSL[0] = (RGB[0] - RGB[1]) * 60 / del + 4;
+            case RGB[2]: this.HSL[0] = (2 / 3) + dRGB[1] - dRGB[0];
                 break;
         }
+        if (this.HSL[0] < 0 ) this.HSL[0] += 1;
+        if (this.HSL[0] > 1 ) this.HSL[0] -= 1;
         callback(this.HSL);
     }
 }
