@@ -7,7 +7,13 @@ import * as mocha from 'mocha';
 import * as http from 'http';
 import * as tests from './tests';
 
-
+function equateArr(arrayA: Array<number>, arrayB: Array<number>): void
+{
+	for (var i = 0; i < arrayA.length; i++)
+	{
+		assert.equal(arrayA[i].toFixed(5), arrayB[i].toFixed(5));
+	}
+}
 
 describe('App', function () 
 {
@@ -55,7 +61,7 @@ describe('App', function ()
 				{
 					colourMode.toCMY(function (CMY) 
 					{
-						assert.deepEqual(CMY, cases[key].CMY);
+						equateArr(CMY, cases[key].CMY);
 						done();
 					});
 				});
@@ -63,7 +69,7 @@ describe('App', function ()
 				{
 					colourMode.toCMYK(function (CMYK) 
 					{
-						assert.deepEqual(CMYK, cases[key].CMYK);
+						equateArr(CMYK, cases[key].CMYK);
 						done();
 					});
 				});
@@ -71,7 +77,7 @@ describe('App', function ()
 				{
 					colourMode.toHSL(function (HSL) 
 					{
-						assert.deepEqual(HSL, cases[key].HSL);
+						equateArr(HSL, cases[key].HSL);
 						done();
 					});
 				});
