@@ -65,6 +65,10 @@ var expected = {
 		'http://localhost:3000/test/images/green100.png',
 		'http://localhost:3000/test/images/blue100.png',
 		'http://localhost:3000/test/images/white100.png']
+	},
+	Averager: {
+		overallAvg: [102, 102, 102],
+		totalPixels: [250, 250]
 	}
 }
 
