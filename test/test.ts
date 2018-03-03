@@ -37,7 +37,6 @@ describe('App', function ()
 	});
 	describe('Analyser', function ()
 	{
-
 		describe('Colour modes', function ()
 		{
 			var cases = tests.expected.colourModes.cases;
@@ -78,6 +77,47 @@ describe('App', function ()
 				});
 			});
 		});
+		describe('Scrapper', function ()
+		{
+			var expected = tests.expected.Scrapper;
+			var scrapperA = new analyser.scrapper(origin + '/test');
+			var scrapperB = new analyser.scrapper(origin + '/test/');
+			it('Request to ' + origin + '/test Scrapes 15 images', function (done)
+			{
+				scrapperA.scrape(function (res)
+				{
+					assert.equal(res.length, expected.imagesLength);
+					done();
+				});
+			});
+
+			it('Request to ' + origin + '/test Scrapes correct images', function (done)
+			{
+				scrapperA.scrape(function (res)
+				{
+					assert.deepEqual(res, expected.images);
+					done();
+				});
+			});
+			it('Request to ' + origin + '/test/ Scrapes 15 images', function (done)
+			{
+				scrapperB.scrape(function (res)
+				{
+					assert.equal(res.length, expected.imagesLength);
+					done();
+				});
+			});
+
+			it('Request to ' + origin + '/test/ Scrapes correct images', function (done)
+			{
+				scrapperB.scrape(function (res)
+				{
+					assert.deepEqual(res, expected.images);
+					done();
+				});
+			});
+		});
+	});
 	after(function (done)
 	{
 		server.close();
