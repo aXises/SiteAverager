@@ -7,7 +7,6 @@ from PIL import Image
 # Averages the RGB values on a given image
 def average(image):
     file = None
-    err = None
     if "\n" in image:
         image = image[:len(image) - 1]
     result = {
@@ -32,9 +31,14 @@ def average(image):
         if type(x[i]) != type(tuple()):
             result["err"] = "corruptPixel"
             break
-        ar += x[i][0]
-        ag += x[i][1]
-        ab += x[i][2]
+        if len(x[i]) == 2:
+            ar += x[i][0]
+            ag = ar
+            ab = ar
+        else:
+            ar += x[i][0]
+            ag += x[i][1]
+            ab += x[i][2]
     result["averageRGB"] = [round(ar / len(x)), round(ag / len(x)), round(ab / len(x))]
     result["prop"] = {
         "size": [file.size[0], file.size[1]],
