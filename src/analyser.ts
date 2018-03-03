@@ -56,14 +56,14 @@ class colourMode implements colourModeData
         async.parallel([
             function (cb)
             {
-                self.toHex(function () 
+                self.toHex(function ()
                 {
                     cb();
                 });
             },
             function (cb) 
             {
-                self.toCMYK(function () 
+                self.toCMYK(function ()
                 {
                     cb();
                 });
@@ -71,7 +71,7 @@ class colourMode implements colourModeData
             },
             function (cb) 
             {
-                self.toHSL(function () 
+                self.toHSL(function ()
                 {
                     cb();
                 })
@@ -346,19 +346,22 @@ class averager
             {
                 var img = new imageAvg(res);
                 async.parallel([
-                    function (callback) {
-                        self.averageOverall(img, function () 
+                    function (callback)
+                    {
+                        self.averageOverall(img, function ()
                         {
                             callback();
                         });
                     },
-                    function (callback) {
-                        self.totalPixel(img, function () 
+                    function (callback)
+                    {
+                        self.totalPixel(img, function ()
                         {
                             callback();
                         });
                     }
-                ], function () {
+                ], function ()
+                {
                     self.imageData.push(img);
                 });
             }
@@ -366,7 +369,8 @@ class averager
         self.shell.end(function (err, code, signal)
         {
             if (err) throw err;
-            self.roundArr(self.imageDataProp.overallAvg, false, function () {
+            self.roundArr(self.imageDataProp.overallAvg, false, function ()
+            {
                 callback(self.imageData, self.imageDataProp);
             });
         });
@@ -434,7 +438,7 @@ module.exports =
 {
     scrapePage: function (url: string, callback: any): void
     {
-        new scrapper(url).scrape(function (res) 
+        new scrapper(url).scrape(function (res)
         {
             callback(res);
         });
@@ -452,9 +456,9 @@ module.exports =
     },
     getColourModes: function(rgb: Array<number>, callback: any): void
     {
-        new colourMode(rgb).toAll(function (res) 
+        new colourMode(rgb).toAll(function (res)
         {
-            callback(res)
+            callback(res);
         });
     },
     colourMode: colourMode,
