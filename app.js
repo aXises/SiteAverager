@@ -11,6 +11,7 @@ var app = express();
 // routes setup
 var index = require('./routes/index');
 var analyse = require('./routes/analyse');
+var test = require('./routes/test');
 
 // global variables
 app.locals.appVersion = package.version;
@@ -34,7 +35,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // views setup
 app.use('/', index);
 app.use('/analyse', analyse);
-
+app.use('/test', test);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');
