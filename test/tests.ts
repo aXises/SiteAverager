@@ -47,7 +47,25 @@ var expected = {
             GREEN: constGreen,
             BLUE: constBlue
         }
-    }
+	},
+	Scrapper: {
+		imagesLength: 15,
+		images: ['http://localhost:3000/test/images/black25.png',
+		'http://localhost:3000/test/images/red25.png',
+		'http://localhost:3000/test/images/green25.png',
+		'http://localhost:3000/test/images/blue25.png',
+		'http://localhost:3000/test/images/white25.png',
+		'http://localhost:3000/test/images/black50.jpg',
+		'http://localhost:3000/test/images/red50.jpg',
+		'http://localhost:3000/test/images/green50.jpg',
+		'http://localhost:3000/test/images/blue50.jpg',
+		'http://localhost:3000/test/images/white50.jpg',
+		'http://localhost:3000/test/images/black100.png',
+		'http://localhost:3000/test/images/red100.png',
+		'http://localhost:3000/test/images/green100.png',
+		'http://localhost:3000/test/images/blue100.png',
+		'http://localhost:3000/test/images/white100.png']
+	}
 }
 
 export { expected }
