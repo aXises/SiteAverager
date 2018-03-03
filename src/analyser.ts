@@ -260,9 +260,13 @@ class scrapper
                         {
                             if (self.url.charAt(self.url.length - 1) == '/')
                             {
-                                if (image.charAt(0) == '/') image = image.slice(1, image.length)
+                                if (image.charAt(0) == '/') image = image.slice(1, image.length);
+
+                            } else
+                            {
+                                if (image.charAt(0) != '/') image = '/' + image;
                             }
-                            if (self.images.indexOf(self.url + image) == -1) self.images.push(self.url + image)
+                            if (self.images.indexOf(self.url + image) == -1) self.images.push(self.url + image);
                         }
                         if (i == $('img').length - 1) callback();
                     });
@@ -284,9 +288,12 @@ class scrapper
                                 image = image.slice(4, image.length - 1)
                                 if (self.url.charAt(self.url.length - 1) == '/')
                                 {
-                                    if (image.charAt(0) == '/') image = image.slice(1, image.length)
+                                    if (image.charAt(0) == '/') image = image.slice(1, image.length);
+                                } else
+                                {
+                                    if (image.charAt(0) != '/') image = '/' + image;
                                 }
-                                if (self.images.indexOf(self.url + image) == -1) self.images.push(self.url + image)
+                                if (self.images.indexOf(self.url + image) == -1) self.images.push(self.url + image);
                             }
                         }
                         if (i == $('*').length - 1) callback();
