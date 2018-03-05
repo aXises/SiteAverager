@@ -129,12 +129,10 @@ describe('App', function ()
 		'http://localhost:3000/images/blue25.png',
 		'http://localhost:3000/images/white50.jpg'];
 		// red50.jpg is 254 instead of 255
-		var averager = new analyser.averager(testLinks);
-		//var averagerB = new analyser.averager(testLinks);
 		var imgData, imgProp;
 		before(function (done) 
 		{
-			averager.average(function (data, prop)
+			new analyser.averager(testLinks).average(function (data, prop)
 			{
 				imgData = data;
 				imgProp = prop;
