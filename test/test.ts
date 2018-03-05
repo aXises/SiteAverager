@@ -120,6 +120,8 @@ describe('App', function ()
 	});
 	describe('Averager', function ()
 	{
+
+
 		var expected = tests.expected.Averager;
 		var testLinks = ['http://localhost:3000/images/black25.png',
 		'http://localhost:3000/images/red50.jpg',
@@ -127,23 +129,27 @@ describe('App', function ()
 		'http://localhost:3000/images/blue25.png',
 		'http://localhost:3000/images/white50.jpg'];
 		// red50.jpg is 254 instead of 255
-		var averagerA = new analyser.averager(testLinks);
-		var averagerB = new analyser.averager(testLinks);
-		it('Averages test images to ' + expected.overallAvg, function (done)
+		var averager = new analyser.averager(testLinks);
+		//var averagerB = new analyser.averager(testLinks);
+		var imgData, imgProp;
+		before(function (done) 
 		{
-			averagerA.average(function (data, prop)
+			averager.average(function (data, prop)
 			{
-				assert.deepEqual(prop.overallAvg, expected.overallAvg);
+				imgData = data;
+				imgProp = prop;
 				done();
 			});
 		});
+		it('Averages test images to ' + expected.overallAvg, function (done)
+		{
+				assert.deepEqual(imgProp.overallAvg, expected.overallAvg);
+				done();
+		});
 		it('Analyses ' + expected.totalPixels[0] + 'x' + expected.totalPixels[1] + ' pixels', function (done)
 		{
-			averagerB.average(function (data, prop)
-			{
-				assert.deepEqual(prop.totalPixels, expected.totalPixels);
+				assert.deepEqual(imgProp.totalPixels, expected.totalPixels);
 				done();
-			});
 		});
 	});
 	after(function (done)
