@@ -7,7 +7,6 @@ environment:
         - PYTHON: "C:\\Python36"
         - PYTHON: "C:\\Python35-x64"
         - PYTHON: "C:\\Python36-x64"
-    PIP3: C:\\Python36\Scripts\pip3
 platform: x64
 cache:
     - node_modules 
@@ -21,8 +20,8 @@ install:
 configuration: Release
 before_test:
     - cmd: "%PYTHON%\\python --version"
-    - cmd: "%PIP3% --version"
-    - cmd: "%PIP3% list"
+    - cmd: "%PYTHON%/Scripts/pip3.exe --version"
+    - cmd: "%PYTHON%/Scripts/pip3.exe list"
     - tsc
     - tsc -v
     - node --version
