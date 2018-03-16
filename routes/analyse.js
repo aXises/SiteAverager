@@ -1,7 +1,6 @@
 var express = require("express");
 var router = express.Router();
-
-var analyser = require("../src/analyser")
+var analyser = require("../src/analyser");
 
 router.get("/", function (req, res, next) 
 {
@@ -31,11 +30,11 @@ router.get("/", function (req, res, next)
                 res.render("result", {
                     "results": imgAvg,
                     "timeTaken": Date.now() - initTime,
-                    "colourModes": colourModes,
                     "prop": {
                         "size": imgProp.totalPixels,
                         "lum": analyser.getLuminance(imgProp.overallAvg)
-                    }
+                    }, 
+                    colourModes
                 });
             });
         });

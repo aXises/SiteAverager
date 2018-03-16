@@ -29,7 +29,7 @@ def average(image):
     ab = 0
     for i, a in enumerate(x):
         if isinstance(x[i], tuple()):
-            result["err"] = "corruptPixel"
+            result["err"] = "corruptPixel on " + a 
             break
         if len(x[i]) == 2:
             ar += x[i][0]
