@@ -127,25 +127,53 @@ describe("App", function ()
 		"http://localhost:3000/images/blue25.png",
 		"http://localhost:3000/images/white50.jpg"];
 		// red50.jpg is 254 instead of 255
-		var imgData, imgProp;
-		before(function (done) 
+		var averagerA = new analyser.averager(testLinks);
+		var averagerB = new analyser.averager(testLinks);
+		it("Averages test images to " + expected.overallAvg, function (done)
 		{
-			new analyser.averager(testLinks).average(function (data, prop)
+			averagerA.average(function (data, prop)
 			{
-				imgData = data;
-				imgProp = prop;
+				assert.deepEqual(prop.overallAvg, expected.overallAvg);
 				done();
 			});
 		});
-		it('Averages test images to ' + expected.overallAvg, function (done)
+		it("Analyses " + expected.totalPixels[0] + "x" + expected.totalPixels[1] + " pixels", function (done)
 		{
-				assert.deepEqual(imgProp.overallAvg, expected.overallAvg);
+			averagerB.average(function (data, prop)
+			{
+				assert.deepEqual(prop.totalPixels, expected.totalPixels);
 				done();
+			});
 		});
-		it('Analyses ' + expected.totalPixels[0] + 'x' + expected.totalPixels[1] + ' pixels', function (done)
+	});
+	describe("All Components", function () {
+		var analysedImgs, analysisProp, allColourModes;
+		var expected = tests.expected.allComponents
+		before(function (done) 
 		{
-				assert.deepEqual(imgProp.totalPixels, expected.totalPixels);
-				done();
+			analyser.scrapePage(origin + "/test", function (result) 
+			{
+				analyser.averageImages(result, function(imgAvg, imgProp) 
+				{
+					analyser.getColourModes(imgProp.overallAvg, function (colourModes)
+					{
+						analysedImgs = imgAvg;
+						analysisProp = imgProp;
+						allColourModes = colourModes;
+						done();
+					});
+				});
+			});
+		});
+		it("Scrapes test page for 15 images", function (done)
+		{
+			assert.equal(analysedImgs.length, expected.imagesLength);
+			done();
+		});
+		it("Scrapes test page for correct images", function (done)
+		{
+			assert.deepEqual(analysedImgs, expected.images);
+			done();
 		});
 	});
 	after(function (done)
