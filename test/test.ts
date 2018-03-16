@@ -127,23 +127,25 @@ describe("App", function ()
 		"http://localhost:3000/images/blue25.png",
 		"http://localhost:3000/images/white50.jpg"];
 		// red50.jpg is 254 instead of 255
-		var averagerA = new analyser.averager(testLinks);
-		var averagerB = new analyser.averager(testLinks);
-		it("Averages test images to " + expected.overallAvg, function (done)
+		var imgData, imgProp;
+		before(function (done) 
 		{
-			averagerA.average(function (data, prop)
+			new analyser.averager(testLinks).average(function (data, prop)
 			{
-				assert.deepEqual(prop.overallAvg, expected.overallAvg);
+				imgData = data;
+				imgProp = prop;
 				done();
 			});
 		});
-		it("Analyses " + expected.totalPixels[0] + "x" + expected.totalPixels[1] + " pixels", function (done)
+		it('Averages test images to ' + expected.overallAvg, function (done)
 		{
-			averagerB.average(function (data, prop)
-			{
-				assert.deepEqual(prop.totalPixels, expected.totalPixels);
+				assert.deepEqual(imgProp.overallAvg, expected.overallAvg);
 				done();
-			});
+		});
+		it('Analyses ' + expected.totalPixels[0] + 'x' + expected.totalPixels[1] + ' pixels', function (done)
+		{
+				assert.deepEqual(imgProp.totalPixels, expected.totalPixels);
+				done();
 		});
 	});
 	after(function (done)

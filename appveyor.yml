@@ -3,23 +3,25 @@ image:
 environment:
     nodejs_version: "8"
     matrix:
+        - PYTHON: "C:\\Python35"
+        - PYTHON: "C:\\Python36"
         - PYTHON: "C:\\Python35-x64"
         - PYTHON: "C:\\Python36-x64"
-    PIP3: C:\\Python36\Scripts\pip
 platform: x64
-init:
-    - cmd: "%PYTHON%\\python --version"
-    - cmd: "%PIP3% --version"
 cache:
     - node_modules 
     - bower_components
 install: 
-    - cmd: "%PIP3% install -r requirements.txt"
+    - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
+    - "%PYTHON%/Scripts/pip3.exe install -r requirements.txt nose"
     - ps: Install-Product node $env:nodejs_version
     - npm install
     - npm install typescript -g
 configuration: Release
 before_test:
+    - cmd: "%PYTHON%\\python --version"
+    - cmd: "%PYTHON%/Scripts/pip3.exe --version"
+    - cmd: "%PYTHON%/Scripts/pip3.exe list"
     - tsc
     - tsc -v
     - node --version
