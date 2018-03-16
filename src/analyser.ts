@@ -1,8 +1,8 @@
-import * as request from 'request';
-import * as async from 'async';
-import * as jsdom from 'jsdom';
-import * as jquery from 'jquery';
-import * as pythonShell from 'python-shell';
+import * as request from "request";
+import * as async from "async";
+import * as jsdom from "jsdom";
+import * as jquery from "jquery";
+import * as pythonShell from "python-shell";
 
 interface imageData
 {
@@ -43,7 +43,7 @@ class colourMode implements colourModeData
     public constructor(RGB: Array<number>)
     {
         this.RGB = RGB;
-        this.hex = '';
+        this.hex = "";
         this.CMY = [0, 0, 0];
         this.CMYK = [0, 0, 0, 0];
         this.HSL = [0, 0, 0];
@@ -80,10 +80,10 @@ class colourMode implements colourModeData
         ], function () 
         {
             callback({
-                'RGB': self.RGB,
-                'HEX': self.hex,
-                'CMYK': self.CMYK,
-                'HSL': self.HSL
+                "RGB": self.RGB,
+                "HEX": self.hex,
+                "CMYK": self.CMYK,
+                "HSL": self.HSL
             });
         });
     }
@@ -94,7 +94,7 @@ class colourMode implements colourModeData
         for (var i = 0; i < this.RGB.length; i++)
         {
             var hex = this.RGB[i].toString(16);
-            if (typeof(hex) != 'number')
+            if (typeof(hex) != "number")
                 hex = hex.toUpperCase();
             this.hex += hex.length == 1 ? "0" + hex: hex;
             if (i == this.RGB.length - 1)
@@ -217,7 +217,7 @@ class scrapper
     public scrape(callback: any): void
     {
         var self = this;
-        if (self.url.slice(0, 4) != 'http') self.url = 'http://' + self.url
+        if (self.url.slice(0, 4) != "http") self.url = "http://" + self.url
         request({
             url: self.url,
             headers: {
@@ -225,7 +225,7 @@ class scrapper
             }
         }, function(err, res, site)
         {
-            if (err) callback({'err': err});
+            if (err) callback({"err": err});
             else
             {
                 self.scrapeImg(new jsdom.JSDOM(site).window, function (res) 
@@ -250,53 +250,53 @@ class scrapper
             async.parallel([
                 function(callback) 
                 {
-                    if ($('img').length == 0) callback();
-                    $('img').each(function (i) {
-                        var image = $(this).attr('src');
-                        if (image.slice(0, 4) == 'http')
+                    if ($("img").length == 0) callback();
+                    $("img").each(function (i) {
+                        var image = $(this).attr("src");
+                        if (image.slice(0, 4) == "http")
                         {
                             if (self.images.indexOf(image) == -1) self.images.push(image);
                         } else
                         {
-                            if (self.url.charAt(self.url.length - 1) == '/')
+                            if (self.url.charAt(self.url.length - 1) == "/")
                             {
-                                if (image.charAt(0) == '/') image = image.slice(1, image.length);
+                                if (image.charAt(0) == "/") image = image.slice(1, image.length);
 
                             } else
                             {
-                                if (image.charAt(0) != '/') image = '/' + image;
+                                if (image.charAt(0) != "/") image = "/" + image;
                             }
                             if (self.images.indexOf(self.url + image) == -1) self.images.push(self.url + image);
                         }
-                        if (i == $('img').length - 1) callback();
+                        if (i == $("img").length - 1) callback();
                     });
                 },
                 function(callback)
                 {
-                    if ($('*').length == 0) callback();
-                    $('*').each(function(i) {
+                    if ($("*").length == 0) callback();
+                    $("*").each(function(i) {
                         var image = $(this).css("background-image");
-                        if (image && image != 'none')
+                        if (image && image != "none")
                         {
-                            if (image.slice(4, 8) == 'http')
+                            if (image.slice(4, 8) == "http")
                             {
-                                image = image.split('(')[1].split(')')[0]
+                                image = image.split("(")[1].split(")")[0]
                                 if (self.images.indexOf(image) == -1) self.images.push(image);
                             }
                             else
                             {
                                 image = image.slice(4, image.length - 1)
-                                if (self.url.charAt(self.url.length - 1) == '/')
+                                if (self.url.charAt(self.url.length - 1) == "/")
                                 {
-                                    if (image.charAt(0) == '/') image = image.slice(1, image.length);
+                                    if (image.charAt(0) == "/") image = image.slice(1, image.length);
                                 } else
                                 {
-                                    if (image.charAt(0) != '/') image = '/' + image;
+                                    if (image.charAt(0) != "/") image = "/" + image;
                                 }
                                 if (self.images.indexOf(self.url + image) == -1) self.images.push(self.url + image);
                             }
                         }
-                        if (i == $('*').length - 1) callback();
+                        if (i == $("*").length - 1) callback();
                     });
                 }
             ], function(err, res) 
@@ -322,10 +322,10 @@ class averager
     {
         this.images = images
         this.imageData = [];
-        this.shell = new pythonShell('./src/average.py');
+        this.shell = new pythonShell("./src/average.py");
         this.imageDataProp = {
-            'overallAvg': [0, 0, 0],
-            'totalPixels': [0, 0]
+            "overallAvg": [0, 0, 0],
+            "totalPixels": [0, 0]
         };
     }
 
@@ -339,9 +339,9 @@ class averager
         {
             self.pythonSend(image);
         });
-        self.shell.on('message', function (res)
+        self.shell.on("message", function (res)
         {
-            res = JSON.parse(res)
+            res = JSON.parse(res);
             if (res.err == "None")
             {
                 var img = new imageAvg(res);

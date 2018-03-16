@@ -1,9 +1,9 @@
-var express = require('express');
+var express = require("express");
 router = express.Router();
 
-var analyser = require('../src/analyser')
+var analyser = require("../src/analyser")
 
-router.get('/', function (req, res, next) 
+router.get("/", function (req, res, next) 
 {
     // Get the current time to determine the time taken.
     var initTime = Date.now();
@@ -12,11 +12,11 @@ router.get('/', function (req, res, next)
     {
         if (result.err)
         {
-            res.render('error', {
-                'message': 'Analyser error',
-                'error': {
-                    'status': 404,
-                    'stack': result.err
+            res.render("error", {
+                "message": "Analyser error",
+                "error": {
+                    "status": 404,
+                    "stack": result.err
                 }
             });
             return;
@@ -28,14 +28,14 @@ router.get('/', function (req, res, next)
             analyser.getColourModes(imgProp.overallAvg, function (colourModes)
             {
                 // Render the result page based on results.
-                res.render('result', {
-                    'results': imgAvg,
-                    'timeTaken': Date.now() - initTime,
-                    'prop': {
-                        'size': imgProp.totalPixels,
-                        'lum': analyser.getLuminance(imgProp.overallAvg)
+                res.render("result", {
+                    "results": imgAvg,
+                    "timeTaken": Date.now() - initTime,
+                    "prop": {
+                        "size": imgProp.totalPixels,
+                        "lum": analyser.getLuminance(imgProp.overallAvg)
                     },
-                    'colourModes': colourModes
+                    "colourModes": colourModes
                 });
             });
         });

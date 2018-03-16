@@ -1,10 +1,10 @@
-var express = require('express');
+var express = require("express");
 router = express.Router();
 
-router.get('/', function (req, res, next) 
+router.get("/", function (req, res, next) 
 {
-    res.render('index', {
-        'title': 'Site Averager'
+    res.render("index", {
+        "title": "Site Averager"
     });
 });
 

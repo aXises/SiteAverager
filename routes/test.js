@@ -1,9 +1,9 @@
-var express = require('express');
+var express = require("express");
 router = express.Router();
 
-router.get('/', function (req, res, next) 
+router.get("/", function (req, res, next) 
 {
-    res.render('test');
+    res.render("test");
 });
 
 module.exports = router;
