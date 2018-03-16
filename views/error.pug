@@ -1,5 +1,10 @@
+extends layout
+
 block content
-    h1= message
-    h2= error.status
-    pre #{error.stack}
-    h1 #{type}
+    #error
+        h3= message
+        h4= error.status
+        pre #{error.stack}
+        h1 #{type}
+        button.btn.btn-info.new(type="button") New Query
+    script(type="text/javascript" src="/scripts/error.js")
