@@ -27,8 +27,8 @@ def average(image):
     ar = 0
     ag = 0
     ab = 0
-    for i in range(len(x)):
-        if type(x[i]) != type(tuple()):
+    for i, a in enumerate(x):
+        if isinstance(x[i], tuple()):
             result["err"] = "corruptPixel"
             break
         if len(x[i]) == 2:
