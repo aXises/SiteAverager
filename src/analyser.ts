@@ -18,8 +18,7 @@ interface colourModeData
     CMY: Array<number>;
     CMYK: Array<number>;
     HSL: Array<number>;
-    hex: string;
-    toAll(callback: any): void;
+    HEX: string;
     toHex(callback: any): void;
     toCMY(callback: any);
     toCMYK(callback: any): void;
@@ -35,7 +34,7 @@ class colourMode implements colourModeData
     public CMY: Array<number>;
     public CMYK: Array<number>;
     public HSL: Array<number>;
-    public hex: string;
+    public HEX: string;
 
     /** @constructor
      * @param {Array} RGB - Initial RGB values to convert.
@@ -43,103 +42,72 @@ class colourMode implements colourModeData
     public constructor(RGB: Array<number>)
     {
         this.RGB = RGB;
-        this.hex = "";
+        this.HEX = "";
         this.CMY = [0, 0, 0];
         this.CMYK = [0, 0, 0, 0];
         this.HSL = [0, 0, 0];
     }
 
     /** Generates all color modes for an instance. */
-    public toAll(callback: any): void
+    public toAll(): Object
     {
-        var self = this;
-        async.parallel([
-            function (cb)
-            {
-                self.toHex(function ()
-                {
-                    cb();
-                });
-            },
-            function (cb) 
-            {
-                self.toCMYK(function ()
-                {
-                    cb();
-                });
-
-            },
-            function (cb) 
-            {
-                self.toHSL(function ()
-                {
-                    cb();
-                })
-
-            }
-        ], function () 
-        {
-            callback({
-                "RGB": self.RGB,
-                "HEX": self.hex,
-                "CMYK": self.CMYK,
-                "HSL": self.HSL
-            });
-        });
+        return {
+            "RGB": this.RGB,
+            "HEX": this.toHEX(),
+            "CMYK": this.toCMYK(),
+            "HSL": this.toHSL()
+        }
     }
     
     /** Converts RGB to its hexdecimal counter part. */
-    public toHex(callback: any): void
+    public toHEX(): String
     {
         for (var i = 0; i < this.RGB.length; i++)
         {
-            var hex = this.RGB[i].toString(16);
-            if (typeof(hex) != "number")
-                hex = hex.toUpperCase();
-            this.hex += hex.length == 1 ? "0" + hex: hex;
+            var HEX = this.RGB[i].toString(16);
+            if (typeof(HEX) != "number")
+                HEX = HEX.toUpperCase();
+            this.HEX += HEX.length == 1 ? "0" + HEX: HEX;
             if (i == this.RGB.length - 1)
-                callback(this.hex);
+                return this.HEX;
         }
     }
 
     /** Converts RGB to CMY. */
-    public toCMY(callback: any): void
+    public toCMY(): Array<number>
     {
         for (var i = 0; i < this.RGB.length; i++)
         {
             this.CMY[i] = 1 - (this.RGB[i] / 255);
             if (i == this.RGB.length - 1)
-                callback(this.CMY);
+                return this.CMY;
         }
     }
 
     /** Coverts RGB to CMYK. */
-    public toCMYK(callback: any): void
+    public toCMYK(): Array<number>
     {
         var self = this;
-        self.toCMY(function (CMY) 
+        var CMY = this.toCMY();
+        if (CMY[0] == 1 && CMY[1] == 1 && CMY[2] == 1)
         {
-            if (CMY[0] == 1 && CMY[1] == 1 && CMY[2] == 1)
+            this.CMYK = [0, 0, 0, 1];
+            return this.CMYK;
+        }
+        var k = Math.min(CMY[0], Math.min(CMY[1], CMY[2]));
+        for (var i = 0; i < CMY.length; i++)
+        {
+            this.CMYK[i] = (CMY[i] - k) / (1 - k)
+            if (i == CMY.length - 1)
             {
-                self.CMYK = [0, 0, 0, 1];
-                callback(self.CMYK);
-                return;
+                this.CMYK[CMY.length] = k;
+                return this.CMYK;
             }
-            var k = Math.min(CMY[0], Math.min(CMY[1], CMY[2]));
-            for (var i = 0; i < CMY.length; i++)
-            {
-                self.CMYK[i] = (CMY[i] - k) / (1 - k)
-                if (i == CMY.length - 1)
-                {
-                    self.CMYK[CMY.length] = k;
-                    callback(self.CMYK);
-                }
-            }
-        });
+        }
     }
 
     /** Converts RGB to HSL. */
-    public toHSL(callback: any): void
+    public toHSL(): Array<number>
     {
         var RGB = [this.RGB[0] / 255, this.RGB[1] / 255, this.RGB[2] / 255];
         var dRGB = [this.RGB[0] / 255, this.RGB[1] / 255, this.RGB[2] / 255];
@@ -152,8 +120,7 @@ class colourMode implements colourModeData
         if (del == 0)
         {
             this.HSL[0] = this.HSL[1] = 0;
-            callback(this.HSL);
-            return;
+            return this.HSL;
         }
         this.HSL[1] = this.HSL[2] >= 0.5 ? del / (2 - (maxRGB + minRGB)) : del / (maxRGB + minRGB);
 
@@ -172,7 +139,7 @@ class colourMode implements colourModeData
         }
         if (this.HSL[0] < 0 ) this.HSL[0] += 1;
         if (this.HSL[0] > 1 ) this.HSL[0] -= 1;
-        callback(this.HSL);
+        return this.HSL;
     }
 }
 
@@ -440,6 +407,7 @@ module.exports =
     {
         new scrapper(url).scrape(function (res)
         {
+            console.log(res)
             callback(res);
         });
     },
@@ -454,12 +422,9 @@ module.exports =
     {
         return Math.sqrt(299 * rgb[0] + 587 * rgb[1] + 144 * rgb[2]) / 1000;
     },
-    getColourModes: function(rgb: Array<number>, callback: any): void
+    getColourModes: function(rgb: Array<number>): Object
     {
-        new colourMode(rgb).toAll(function (res)
-        {
-            callback(res);
-        });
+        return new colourMode(rgb).toAll()
     },
     colourMode: colourMode,
     scrapper: scrapper,

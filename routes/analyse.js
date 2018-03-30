@@ -23,19 +23,16 @@ router.get("/", function (req, res, next)
         // Average the images.
         analyser.averageImages(result, function(imgAvg, imgProp) 
         {
-            // Generate colour modes.
-            analyser.getColourModes(imgProp.overallAvg, function (colourModes)
+            // Render the result page based on results.
+            res.render("result", 
             {
-                // Render the result page based on results.
-                res.render("result", {
-                    "results": imgAvg,
-                    "timeTaken": Date.now() - initTime,
-                    "prop": {
-                        "size": imgProp.totalPixels,
-                        "lum": analyser.getLuminance(imgProp.overallAvg)
-                    }, 
-                    colourModes
-                });
+                "results": imgAvg,
+                "timeTaken": Date.now() - initTime,
+                "prop": {
+                    "size": imgProp.totalPixels,
+                    "lum": analyser.getLuminance(imgProp.overallAvg)
+                }, 
+                "colourModes": analyser.getColourModes(imgProp.overallAvg)
             });
         });
     });
