@@ -27,32 +27,40 @@ def average(image):
     ar = 0
     ag = 0
     ab = 0
+    pixels = 0
     for i, a in enumerate(x):
-        if isinstance(x[i], tuple()):
-            result["err"] = "corruptPixel on " + a 
-            break
-        if len(x[i]) == 2:
-            ar += x[i][0]
-            ag = ar
-            ab = ar
+        pixels = i
+        if isinstance(a, int):
+            ar += a
+            ag += a
+            ab += a
+        elif isinstance(a, tuple):
+            if len(a) == 2:
+                ar += a[0]
+                ag += a[0]
+                ab += a[0]
+            else:
+                ar += a[0]
+                ag += a[1]
+                ab += a[2]
         else:
-            ar += x[i][0]
-            ag += x[i][1]
-            ab += x[i][2]
-    result["averageRGB"] = [round(ar / len(x)), round(ag / len(x)), round(ab / len(x))]
+            result["err"] = "parsePixelErr"
+            print(json.dumps(result))
+            return
+    result["averageRGB"] = [round(ar / i), round(ag / i), round(ab / i)]
     result["prop"] = {
         "size": [file.size[0], file.size[1]],
-        "format": file.format
+        "format": file.format,
+        "pixels": pixels
     }
     print(json.dumps(result))
 
 
-def main(argc, argv):
-    data = sys.stdin.readlines()
-    for image in data:
+def main(argv):
+    for image in argv:
         average(image)
     sys.stdout.flush()
 
 
 if __name__ == "__main__":
-    main(len(sys.argv), sys.argv)
+    main(sys.stdin.readlines())
