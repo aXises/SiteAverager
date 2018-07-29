@@ -20,10 +20,12 @@
   "homepage": "https://github.com/aXises/SiteAverager#readme",
   "dependencies": {
     "@types/async": "^2.0.47",
+    "@types/jquery": "^3.3.5",
     "@types/jsdom": "^11.0.4",
     "@types/mocha": "^2.2.48",
     "@types/node": "^9.4.6",
     "@types/request": "^2.47.0",
+    "@types/request-promise": "^4.1.42",
     "async": "^2.6.0",
     "body-parser": "^1.18.2",
     "bower": "^1.8.2",
@@ -35,9 +37,11 @@
     "less-middleware": "^2.2.1",
     "mocha": "^5.0.1",
     "morgan": "^1.9.0",
+    "promise": "^8.0.1",
     "pug": "^2.0.0-rc.4",
     "python-shell": "^0.5.0",
-    "request": "^2.83.0",
+    "request": "^2.87.0",
+    "request-promise": "^4.2.2",
     "typescript": "^2.7.1"
   }
 }
