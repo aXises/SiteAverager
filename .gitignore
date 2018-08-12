@@ -85,8 +85,6 @@ $RECYCLE.BIN/
 *.lnk
 
 # Custom
-src/*.js
+**.js
 public/styles/*.css
-public/scripts/*.js
-test/*.js
 bower_components
