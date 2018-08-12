@@ -1,6 +1,7 @@
 import * as request from "request-promise";
 import * as jsdom from "jsdom";
 import * as jquery from "jquery";
+import * as url from "url";
 import Promise from "promise";
 
 /** A class to scrape web pages */
@@ -19,7 +20,7 @@ export class Scrapper {
     /**
      * Method to scrape the entire page and generate a window.
      */
-    public scrape(callback: any): Promise<any> {
+    public scrape(): Promise<any> {
         return new Promise((resolve, reject) => {
             const self = this;
             if (self.url.slice(0, 4) !== "http") { self.url = "http://" + self.url; }
@@ -91,25 +92,14 @@ export class Scrapper {
      */
     private scrapeImg(window: jsdom.DOMWindow): Promise<any> {
         return new Promise((resolve, reject) => {
-            const self = this;
             const document = window.document;
             const $: any = jquery(window);
             $(document).ready(() => {
                 if ($("img").length === 0) { return; }
                 const counter = 0;
                 $("img").each((i) => {
-                    const image = $(this).attr("src");
-                    const cases = [   image, // Default link
-                        self.url + image, // Link with origin
-                        self.url + "/" + image.slice(1, image.length), // Link with origin but missing initial "/"
-                        self.url + "/" + image,
-                        "http:" + image, // Link with http
-                        "http:/" + image,
-                        "http://" + image
-                    ];
-                    for (const c of cases) {
-                        self.verifyImg(c).then().catch();
-                    }
+                    const image = url.resolve(this.url, $(this).attr("src"));
+                    this.verifyImg(image).then().catch();
                 });
             });
         });
