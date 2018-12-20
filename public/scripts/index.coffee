@@ -1,6 +1,6 @@
-submitData = (url, data) =>
+submitData = (route, data) =>
     $.ajax 
-        url: url
+        url: route
         type: "POST"
         data: data
 
@@ -11,7 +11,7 @@ $(document).ready =>
         if value == ""
             return $("input:first").addClass("is-invalid")
         $("input[type=\"submit\"]").val("Analysing...")
-        submitData("/analyse", $("input:first").val()).then (res) =>
-            # alert(res)
+        submitData("/analyse", url: $("input:first").val()).then (res) =>
+            return
         .catch (err) =>
-            # alert(err)
+            return
