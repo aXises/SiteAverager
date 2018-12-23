@@ -1,13 +1,18 @@
 import * as express from "express";
-import { Analyser } from "../src/Analyser";
-import { Scrapper } from "../src/Scrapper";
+import { Analyser } from "src/Analyser";
+import Scrapper from "src/Scrapper";
 
-export const router = express.Router();
+const router = express.Router();
 
-router.post("/", (req, res, next) => {
-    // Get the current time to determine the time taken.
+router.post("/", async (req, res, next) => {
+    // Get the current time to determine the time wtaken.
     const initTime = Date.now();
-    const scrapper = new Scrapper(req.body.url);
+    try {
+        const scraper = new Scrapper(req.body.url);
+        await scraper.scrape();
+    } catch (err) {
+        res.send(JSON.stringify(new Error(err)));
+    }
     // const analyser = new Analyser();
     // Scrape the page for images.
     // analyser.scrapePage(decodeURIComponent(req.query.query), function (result)
@@ -40,3 +45,5 @@ router.post("/", (req, res, next) => {
     //     });
     // });
 });
+
+export default router;

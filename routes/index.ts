@@ -1,9 +1,11 @@
 import * as express from "express";
 
-export const router = express.Router();
+const router = express.Router();
 
-router.get("/", (req, res, next) => {
+router.get("/", async (req, res, next) => {
     res.render("index", {
-        title: "Site Averager"
+        title: "Site Averager",
     });
 });
+
+export default router;

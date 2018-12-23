@@ -2,28 +2,29 @@ import * as request from "request-promise";
 import * as jsdom from "jsdom";
 import * as jquery from "jquery";
 import * as url from "url";
+import UnsupportedImageTypeError from "src/exception/UnsupportedImageTypeError";
 
-declare const JPEGMagicNumber = "ffd8ff";
-declare const PNGMagicNumber = "89504e";
+const JPEGMagicNumber = "ffd8ff";
+const PNGMagicNumber = "89504e";
 
 /** A class to scrape web pages */
-export class Scrapper {
+export default class Scrapper {
 
     private readonly url: string;
-    private scrappedImages: string[];
+    private readonly scrappedImagesURL: string[];
 
     /** @constructor
      * @param {string} query - The url of the page to scrape.
      */
-    public constructor(query: string) {
-        this.url = query;
-        this.scrappedImages = [];
+    public constructor(queryURL: string) {
+        this.url = queryURL;
+        this.scrappedImagesURL = [];
     }
 
     /**
      * Method to scrape the entire page and generate a window.
      */
-    public async scrape(): Promise<void> {
+    public async scrape(): Promise<string[]> {
         try {
             const result = await request.get({
                 url: this.url,
@@ -31,30 +32,34 @@ export class Scrapper {
                     gzip: true,
                 },
             });
-            if (result.statusCode !== 200) {
-                throw new Error();
+            if (result) {
+                await this.scrapeImages(new jsdom.JSDOM(result).window);
+                return this.scrappedImagesURL;
+            } else {
+                throw new Error("No data retrieved");
             }
-            this.scrapeImages(new jsdom.JSDOM(result).window);
         } catch (err) {
-            throw new Error(err);
+            throw err;
         }
     }
 
-    private async verifyImage(image: string): Promise<boolean> {
-        try {
-            const result = await request.get({
-                url: image,
-                encoding: undefined,
-            });
-            if (result) {
-                if (result.toString("hex", 0, 3) === JPEGMagicNumber || result.toString("hex", 0, 3) === PNGMagicNumber) {
-                    return true;
+    public async verifyAndPushImage(image: string): Promise<void> {
+            try {
+                const result = await request.get({
+                    url: image,
+                    /* tslint:disable */
+                    encoding: null,
+                });
+                if (result) {
+                    if (result.toString("hex", 0, 3) === JPEGMagicNumber || result.toString("hex", 0, 3) === PNGMagicNumber) {
+                        this.scrappedImagesURL.push(image);
+                    } else {
+                        throw new UnsupportedImageTypeError();
+                    }
                 }
+            } catch (err) {
+                throw err;
             }
-            return false;
-        } catch (err) {
-            throw new Error(err);
-        }
     }
 
     /**
@@ -63,18 +68,20 @@ export class Scrapper {
      */
     private async scrapeImages(window: jsdom.DOMWindow): Promise<void> {
         try {
-            const document = window.document;
             const $: any = jquery(window);
-            await $(document).ready();
             if ($("img").length === 0) { return; }
-            $("img").each(async () => {
-                const image = url.resolve(this.url, $(this).attr("src"));
-                if (await this.verifyImage(image)) {
-                    this.scrappedImages.push(image);
-                }
-            });
+            const asyncImagesVerification = [];
+            for (const img of $("img")) {
+                const image = url.resolve(this.url, $(img).attr("src"));
+                asyncImagesVerification.push(this.verifyAndPushImage(image));
+            }
+            await Promise.all(asyncImagesVerification);
         } catch (err) {
-            throw new Error(err);
+            throw err;
         }
+    }
+
+    public getImagesURL(): string[] {
+        return this.scrappedImagesURL;
     }
 }

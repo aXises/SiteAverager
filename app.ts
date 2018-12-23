@@ -5,8 +5,9 @@ import * as cookieParser from "cookie-parser";
 import * as bodyParser from "body-parser";
 import * as lessMiddleware from "less-middleware";
 
-import { router as index } from "./routes/index";
-import { router as analyse } from "./routes/analyse";
+import index from "routes/index";
+import result from "routes/result";
+import sample from "routes/sample";
 
 const app = express();
 
@@ -28,7 +29,8 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // views setup
 app.use("/", index);
-app.use("/analyse", analyse);
+app.use("/result", result);
+app.use("/sample", sample);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
@@ -48,4 +50,4 @@ app.use((err, req, res, next) => {
     res.render("error");
 });
 
-module.exports = app;
+export default app;

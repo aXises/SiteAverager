@@ -1,7 +1,6 @@
 
 import * as async from "async";
 import * as pythonShell from "python-shell";
-import Promise from "promise";
 import { ColourMode } from "./ColourMode";
 import { ImageData } from "./ImageData";
 

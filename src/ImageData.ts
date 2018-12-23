@@ -1,5 +1,5 @@
 /** A class holding properties of a processed image. */
-export class ImageData {
+export class Image {
     public readonly url: string;
     public readonly format: string;
     public readonly averageRGB: number[];
@@ -8,10 +8,10 @@ export class ImageData {
     /** @constructor
      * @param {object} data - Properties of the processed image.
      */
-    constructor(data: ImageData) {
-        this.url = data.url;
-        this.format = data.format;
-        this.averageRGB = data.averageRGB;
-        this.size = data.size;
+    constructor(url: string, format, average, size) {
+        this.url = url;
+        this.format = format;
+        this.averageRGB = average;
+        this.size = size;
     }
 }
