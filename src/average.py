@@ -10,44 +10,41 @@ def average(image):
     if "\n" in image:
         image = image[:len(image) - 1]
     result = {
-        "err": "None",
         "image": image
     }
     try:
         file = Image.open(BytesIO(requests.get(image).content), "r")
     except (OSError, RuntimeError):
-        result["err"] = "readErr"
+        result["err"] = True
         print(json.dumps(result))
         return
-    if file == None:
-        result["err"] = "badInput"
+    if not file:
+        result["err"] = True
         print(json.dumps(result))
         return
-    x = file.getdata()
+    data = file.getdata()
     ar = 0
     ag = 0
     ab = 0
     pixels = 0
-    for i, a in enumerate(x):
-        pixels = i
-        if isinstance(a, int):
-            ar += a
-            ag += a
-            ab += a
-        elif isinstance(a, tuple):
-            if len(a) == 2:
-                ar += a[0]
-                ag += a[0]
-                ab += a[0]
+    for pixels, rgb in enumerate(data):
+        if isinstance(rgb, int):
+            ar += rgb
+            ag += rgb
+            ab += rgb
+        elif isinstance(rgb, tuple):
+            if len(rgb) == 2:
+                ar += rgb[0]
+                ag += rgb[0]
+                ab += rgb[0]
             else:
-                ar += a[0]
-                ag += a[1]
-                ab += a[2]
+                ar += rgb[0]
+                ag += rgb[1]
+                ab += rgb[2]
         else:
-            result["err"] = "parsePixelErr"
+            result["err"] = True
             print(json.dumps(result))
             return
-    result["averageRGB"] = [round(ar / i), round(ag / i), round(ab / i)]
     result["prop"] = {
         "size": [file.size[0], file.size[1]],
         "format": file.format,
