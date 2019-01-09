@@ -2,11 +2,11 @@ extends layout
 
 block content
     main#result
-        #overallRGB(style="background-color: rgb(" + colourModes.RGB + ");")
+        #overallRGB(style="background-color: rgb(" + totalColourModes.RGB + ");")
         #resultRGB
-            each result in results
-                div.block(style="background-color: rgb(" + result.averageRGB + ");")
-        - if (prop.lum < 160)
+            each image in imageData
+                div.block(style="background-color: rgb(" + image.RGB + ");")
+        - if (totalLuminance < 160)
             #overallInfo.bright
                 +info
         - else
@@ -16,18 +16,18 @@ block content
 
 mixin info
     p= "RGB: "
-        +generateString(colourModes.RGB, 0)
-    p= "HEX: " + colourModes.HEX
+        +generateColourModeString(totalColourModes.RGB, 0)
+    p= "HEX: " + totalColourModes.HEX
     p= "CMYK: "
-        +generateString(colourModes.CMYK, 4)
-    p= "HSL: " + colourModes.HSL[0].toFixed(2) + "° " + (colourModes.HSL[1] * 100).toFixed(2) + "% " + (colourModes.HSL[2] * 100).toFixed(2) + "%"
-    - var text = "Analysed " + prop.size[0] * prop.size[1] + " pixels across " + results.length + " images" + " in " + (timeTaken * 0.001).toFixed(2) + " seconds"
-    - if (results.length == 0)
-        - text = "No images detected"
-    - else if (results.length == 1) text = "Analysed " + prop.size[0] * prop.size[1] + " pixels across " + results.length + " image" + " in " + (timeTaken * 0.001).toFixed(2) + " seconds"
+        +generateColourModeString(totalColourModes.CMYK, 4)
+    p= "HSL: " + totalColourModes.HSL[0].toFixed(2) + "° " + (totalColourModes.HSL[1] * 100).toFixed(2) + "% " + (totalColourModes.HSL[2] * 100).toFixed(2) + "%"
+    - var text = `Analysed ${totalPixels[0] * totalPixels[1]} pixels across ${imageData.length} image(s) in ${(timeTaken * 0.001).toFixed(2)} seconds.`
+    - if (imageData.length === 0)
+        - text = "No image were detected."
+    - else if (imageData.length === 1) text = "Analysed " + totalPixels[0] * totalPixels[1] + " pixels across " + results.length + " image" + " in " + (timeTaken * 0.001).toFixed(2) + " seconds"
     p= text
 
-mixin generateString(arr, acc)
+mixin generateColourModeString(arr, acc)
     - var i = 0
     each val in arr
         - if (i == arr.length - 1)
