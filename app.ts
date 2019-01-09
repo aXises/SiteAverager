@@ -6,7 +6,7 @@ import * as bodyParser from "body-parser";
 import * as lessMiddleware from "less-middleware";
 
 import index from "routes/index";
-import result from "routes/result";
+import analyse from "routes/analyse";
 import sample from "routes/sample";
 
 const app = express();
@@ -29,7 +29,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // views setup
 app.use("/", index);
-app.use("/result", result);
+app.use("/analyse", analyse);
 app.use("/sample", sample);
 
 // catch 404 and forward to error handler
