@@ -1,15 +1,15 @@
 
 import * as async from "async";
 import * as pythonShell from "python-shell";
-import { ColourMode } from "./ColourMode";
-import { ImageData } from "./ImageData";
+import ImageData from "src/ImageData";
 
 /** A class to process and average images */
-export class Analyser {
+export default class Analyser {
     private images: string[];
     private imageData: ImageData[];
     private shell: pythonShell;
-    private imageProp: any;
+    private averageRGB: [number, number, number];
+    private pixelsAnalysed: [number, number];
 
     /** @constructor
      * @param {array} images - A array of image urls to process.
@@ -18,37 +18,33 @@ export class Analyser {
         this.images = images;
         this.imageData = [];
         this.shell = new pythonShell("./src/average.py");
-        this.imageProp = {
-            overallAverage: [0, 0, 0],
-            totalPixels: [0, 0]
-        };
+        this.averageRGB = [0, 0, 0];
+        this.pixelsAnalysed = [0, 0];
     }
 
     /**
      * Method to average a image. Data is sent to python via python shell for processing.
      */
-    public average(): Promise<any> {
-        const self = this;
+    public async average(): Promise<any> {
         for (const image of this.images) {
-            self.pythonSend(image);
+            await this.shell.send(image);
         }
-        return new Promise((resolve, reject) => {
-            self.shell.on("message", (res) => {
-                res = JSON.parse(res);
-                if (res.err === "None") {
-                    const img = new ImageData(res);
-                    self.averageOverall(img);
-                    self.totalPixel(img);
-                    self.imageData.push(img);
-                }
-            });
-            self.shell.end((err, code, signal) => {
-                if (err) { throw err; }
-                resolve({imageData: self.imageData, imageProp: self.imageProp});
-            });
+        this.shell.on("message", (res: string) => {
+            const data = JSON.parse(res);
+            if (!data.err) {
+                const image = new ImageData(data);
+                this.averageOverall(image);
+                this.totalPixel(dwadawd);
+                this.imageData.push(img);
+            } else {
+                //
+            }
+        });
+        this.shell.end((err, code, signal) => {
+            if (err) { throw err; }
+            resolve({imageData: this.imageData, imageProp: this.imageProp});
         });
     }
-
     /**
      * Sends a string of text to python.
      * @param {string} data - The data to send.
