@@ -10,7 +10,7 @@ def average(image):
     if "\n" in image:
         image = image[:len(image) - 1]
     result = {
-        "image": image
+        "url": image
     }
     try:
         file = Image.open(BytesIO(requests.get(image).content), "r")
@@ -45,9 +45,11 @@ def average(image):
             result["err"] = True
             print(json.dumps(result))
             return
-    result["prop"] = {
+    result = {
+        "url": image,
         "size": [file.size[0], file.size[1]],
         "format": file.format,
+        "rgb": [ar / pixels, ag / pixels, ab / pixels],
         "pixels": pixels
     }
     print(json.dumps(result))

@@ -1,7 +1,10 @@
-
-import * as async from "async";
 import * as pythonShell from "python-shell";
 import ImageData from "src/ImageData";
+import RGB from "src/enums/RGB";
+import ColourData from "./ColourData";
+
+const WIDTH = 0;
+const HEIGHT = 1;
 
 /** A class to process and average images */
 export default class Analyser {
@@ -9,7 +12,7 @@ export default class Analyser {
     private imageData: ImageData[];
     private shell: pythonShell;
     private averageRGB: [number, number, number];
-    private pixelsAnalysed: [number, number];
+    private totalPixels: [number, number];
 
     /** @constructor
      * @param {array} images - A array of image urls to process.
@@ -19,57 +22,68 @@ export default class Analyser {
         this.imageData = [];
         this.shell = new pythonShell("./src/average.py");
         this.averageRGB = [0, 0, 0];
-        this.pixelsAnalysed = [0, 0];
+        this.totalPixels = [0, 0];
+    }
+
+    public async analyse(): Promise<void> {
+        await this.generateImageData();
+        await this.generateResult();
+    }
+
+    public getTotalColourModes(): object {
+        return new ColourData(this.averageRGB).getColourModes();
+    }
+
+    public getTotalLuminance(): number {
+        return new ColourData(this.averageRGB).getLuminance();
+    }
+
+    public getTotalRGB(): [number, number, number] {
+        return this.averageRGB;
+    }
+
+    public getTotalPixels(): [number, number] {
+        return this.totalPixels;
+    }
+
+    public getImageData(): ImageData[] {
+        return this.imageData;
     }
 
     /**
      * Method to average a image. Data is sent to python via python shell for processing.
      */
-    public async average(): Promise<any> {
-        for (const image of this.images) {
-            await this.shell.send(image);
-        }
-        this.shell.on("message", (res: string) => {
-            const data = JSON.parse(res);
-            if (!data.err) {
-                const image = new ImageData(data);
-                this.averageOverall(image);
-                this.totalPixel(dwadawd);
-                this.imageData.push(img);
-            } else {
-                //
+    private generateImageData(): Promise<void> {
+        return new Promise((resolve, reject) => {
+            for (const image of this.images) {
+                this.shell.send(image);
             }
+            this.shell.on("message", (res: string) => {
+                const data = JSON.parse(res);
+                if (!data.err) {
+                    const image = new ImageData(data.url, data.format, data.rgb, data.size);
+                    this.imageData.push(image);
+                } else {
+                    //
+                }
+            });
+            this.shell.end((err) => {
+                err ? reject(err) : resolve();
+            });
         });
-        this.shell.end((err, code, signal) => {
-            if (err) { throw err; }
-            resolve({imageData: this.imageData, imageProp: this.imageProp});
-        });
-    }
-    /**
-     * Sends a string of text to python.
-     * @param {string} data - The data to send.
-     */
-    private pythonSend(data: string): void {
-        this.shell.send(data);
     }
 
-    /**
-     * Gets the overall average RGB of the query.
-     * @param {ColourMode} image - Processed image data to add to the overall.
-     */
-    private averageOverall(image: ImageData): void {
-        for (let i = 0; i < this.imageProp.overallAvg.length; i++) {
-            this.imageProp.overallAvg[i] += image.averageRGB[i] / this.images.length;
+    private generateResult(): void {
+        for (const image of this.imageData) {
+            // console.log(image.getRGB()[RGB.RED]);
+            this.averageRGB[RGB.RED] += image.getRGB()[RGB.RED];
+            this.averageRGB[RGB.GREEN] += image.getRGB()[RGB.GREEN];
+            this.averageRGB[RGB.BLUE] += image.getRGB()[RGB.BLUE];
+            this.totalPixels[WIDTH] += image.getSize()[WIDTH];
+            this.totalPixels[HEIGHT] += image.getSize()[HEIGHT];
         }
-    }
-
-    /**
-     * Gets the total pixels analysed in the query.
-     * @param {ColourMode} image - Processed image data to add to the overall.
-     */
-    private totalPixel(image: ImageData): void {
-        for (const i of this.imageProp.totalPixels) {
-            this.imageProp.totalPixels[i] += image.size[i];
-        }
+        this.averageRGB[RGB.RED] = this.averageRGB[RGB.RED] / this.imageData.length;
+        this.averageRGB[RGB.GREEN] = this.averageRGB[RGB.GREEN] / this.imageData.length;
+        this.averageRGB[RGB.BLUE] = this.averageRGB[RGB.BLUE] / this.imageData.length;
     }
 }
