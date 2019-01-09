@@ -2,11 +2,11 @@
  * A class holding colour properties of a colour.
  */
 
-export class ColourMode {
-    public RGB: number[];
-    public CMY: number[];
-    public CMYK: number[];
-    public HSL: number[];
+export default class ColourMode {
+    public RGB: [number, number, number];
+    public CMY: [number, number, number];
+    public CMYK: [number, number, number, number];
+    public HSL: [number, number, number];
     public HEX: string;
 
     /** @constructor
@@ -26,7 +26,7 @@ export class ColourMode {
             RGB: this.RGB,
             HEX: this.toHEX(),
             CMYK: this.toCMYK(),
-            HSL: this.toHSL()
+            HSL: this.toHSL(),
         };
     }
 
@@ -96,8 +96,8 @@ export class ColourMode {
             case RGB[2]: this.HSL[0] = (2 / 3) + dRGB[1] - dRGB[0];
                          break;
         }
-        if (this.HSL[0] < 0 ) { this.HSL[0] += 1; }
-        if (this.HSL[0] > 1 ) { this.HSL[0] -= 1; }
+        if (this.HSL[0] < 0) { this.HSL[0] += 1; }
+        if (this.HSL[0] > 1) { this.HSL[0] -= 1; }
         return this.HSL;
     }
 }
