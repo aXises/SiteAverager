@@ -32,7 +32,9 @@
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "request-promise": "^4.2.2",
-    "reset.css": "^2.0.2"
+    "reset.css": "^2.0.2",
+    "webpack": "^4.28.1",
+    "webpack-cli": "^3.2.1"
   },
   "devDependencies": {
     "@types/async": "^2.0.50",
@@ -49,8 +51,6 @@
     "chai": "^4.2.0",
     "mocha": "^5.2.0",
     "tslint": "^5.11.0",
-    "typescript": "^2.9.2",
-    "webpack": "^4.28.1",
-    "webpack-cli": "^3.2.1"
+    "typescript": "^2.9.2"
   }
 }
