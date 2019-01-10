@@ -36,16 +36,13 @@ export default class ColourMode {
     }
 
     /** Converts RGB to its hex counter part. */
-    public toHEX(): string {
-        for (let i = 0; i < this.RGB.length; i++) {
-            let HEX = this.RGB[i].toString(16);
+    public toHEX(): void {
+        for (let i = 0; i < 3; i++) {
+            let HEX = Math.round(this.RGB[i]).toString(16);
             if (typeof(HEX) !== "number") {
                 HEX = HEX.toUpperCase();
             }
             this.HEX += HEX.length === 1 ? "0" + HEX : HEX;
-            if (i === this.RGB.length - 1) {
-                return this.HEX;
-            }
         }
     }
 
@@ -106,7 +103,8 @@ export default class ColourMode {
     }
 
     public getLuminance(): number {
-        return Math.sqrt(299 * this.RGB[ERGB.RED] + 587 * this.RGB[ERGB.GREEN] + 144 * this.RGB[ERGB.BLUE]) / 1000;
+        return (0.299 * this.RGB[ERGB.RED] + 0.587 * this.RGB[ERGB.GREEN] + 0.114 * this.RGB[ERGB.BLUE]) / 255;
+    }
 
     private generateColourModes(): void {
         this.toHEX();
