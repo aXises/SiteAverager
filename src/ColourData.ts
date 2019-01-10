@@ -24,12 +24,14 @@ export default class ColourMode {
     }
 
     /** Generates all color modes for an instance. */
-    public getColourModes(): object {
+    public getColourModes(): any {
+        this.generateColourModes();
         return {
             RGB: this.RGB,
-            HEX: this.toHEX(),
-            CMYK: this.toCMYK(),
-            HSL: this.toHSL(),
+            HEX: this.HEX,
+            CMY: this.CMY,
+            CMYK: this.CMYK,
+            HSL: this.HSL,
         };
     }
 
@@ -105,5 +107,11 @@ export default class ColourMode {
 
     public getLuminance(): number {
         return Math.sqrt(299 * this.RGB[ERGB.RED] + 587 * this.RGB[ERGB.GREEN] + 144 * this.RGB[ERGB.BLUE]) / 1000;
+
+    private generateColourModes(): void {
+        this.toHEX();
+        this.toCMY();
+        this.toCMYK();
+        this.toHSL();
     }
 }
