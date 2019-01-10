@@ -30,7 +30,8 @@ class Form extends React.Component<{}, IFormFields> {
     }
     private userInput(event: React.ChangeEvent): void {
         const fieldValue = (event.target as HTMLInputElement).value;
-        this.setState({value: fieldValue, isValid: fieldValue.length !== 0});
+        const isValid = fieldValue.length !== 0 && fieldValue.trim().length !== 0;
+        this.setState({value: fieldValue.trim(), isValid});
     }
 }
 
