@@ -2,7 +2,7 @@ const path = require("path");
 const webpack = require("webpack");
 module.exports = {
     entry: {
-        form: path.resolve(__dirname, "./") + "/public/components/Form.js",
+        form: "./public/components/Form.js",
     },
     output: {
         path: path.resolve(__dirname, "public"),
