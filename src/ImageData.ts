@@ -6,15 +6,17 @@ export default class ImageData {
     private readonly format: string;
     private readonly RGB: [number, number, number];
     private readonly size: [number, number];
+    private readonly pixels: number;
     private colourData: ColourData;
     /** @constructor
      * @param {object} data - Properties of the processed image.
      */
-    constructor(url: string, format: string, rgb: [number, number, number], size: [number, number]) {
+    constructor(url: string, format: string, rgb: [number, number, number], size: [number, number], pixels: number) {
         this.url = url;
         this.format = format;
         this.RGB = rgb;
         this.size = size;
+        this.pixels = pixels;
         this.colourData = new ColourData(rgb);
     }
 
@@ -24,6 +26,10 @@ export default class ImageData {
 
     public getSize(): [number, number] {
         return this.size;
+    }
+
+    public getPixels(): number {
+        return this.pixels;
     }
 
     public getColourData(): ColourData {

@@ -50,7 +50,7 @@ def average(image):
         "size": [file.size[0], file.size[1]],
         "format": file.format,
         "rgb": [ar / pixels, ag / pixels, ab / pixels],
-        "pixels": pixels
+        "pixels": pixels + 1
     }
     print(json.dumps(result))
 

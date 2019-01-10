@@ -12,7 +12,7 @@ export default class Analyser {
     private imageData: ImageData[];
     private shell: pythonShell;
     private averageRGB: [number, number, number];
-    private totalPixels: [number, number];
+    private totalPixels: number;
 
     /** @constructor
      * @param {array} images - A array of image urls to process.
@@ -22,7 +22,7 @@ export default class Analyser {
         this.imageData = [];
         this.shell = new pythonShell("./src/average.py");
         this.averageRGB = [0, 0, 0];
-        this.totalPixels = [0, 0];
+        this.totalPixels = 0;
     }
 
     public async analyse(): Promise<void> {
@@ -30,7 +30,7 @@ export default class Analyser {
         await this.generateResult();
     }
 
-    public getTotalColourModes(): object {
+    public getTotalColourModes(): any {
         return new ColourData(this.averageRGB).getColourModes();
     }
 
@@ -42,12 +42,16 @@ export default class Analyser {
         return this.averageRGB;
     }
 
-    public getTotalPixels(): [number, number] {
+    public getTotalPixels(): number {
         return this.totalPixels;
     }
 
     public getImageData(): ImageData[] {
         return this.imageData;
+    }
+
+    public getImages(): string[] {
+        return this.images;
     }
 
     /**
@@ -60,11 +64,10 @@ export default class Analyser {
             }
             this.shell.on("message", (res: string) => {
                 const data = JSON.parse(res);
+                // console.log(data);
                 if (!data.err) {
-                    const image = new ImageData(data.url, data.format, data.rgb, data.size);
+                    const image = new ImageData(data.url, data.format, data.rgb, data.size, data.pixels);
                     this.imageData.push(image);
-                } else {
-                    //
                 }
             });
             this.shell.end((err) => {
@@ -75,12 +78,10 @@ export default class Analyser {
 
     private generateResult(): void {
         for (const image of this.imageData) {
-            // console.log(image.getRGB()[RGB.RED]);
             this.averageRGB[RGB.RED] += image.getRGB()[RGB.RED];
             this.averageRGB[RGB.GREEN] += image.getRGB()[RGB.GREEN];
             this.averageRGB[RGB.BLUE] += image.getRGB()[RGB.BLUE];
-            this.totalPixels[WIDTH] += image.getSize()[WIDTH];
-            this.totalPixels[HEIGHT] += image.getSize()[HEIGHT];
+            this.totalPixels += image.getPixels();
         }
         this.averageRGB[RGB.RED] = this.averageRGB[RGB.RED] / this.imageData.length;
         this.averageRGB[RGB.GREEN] = this.averageRGB[RGB.GREEN] / this.imageData.length;
