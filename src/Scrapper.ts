@@ -53,8 +53,6 @@ export default class Scrapper {
                 if (result) {
                     if (result.toString("hex", 0, 3) === JPEGMagicNumber || result.toString("hex", 0, 3) === PNGMagicNumber) {
                         this.scrappedImagesURL.push(image);
-                    } else {
-                        throw new UnsupportedImageTypeError();
                     }
                 }
             } catch (err) {
