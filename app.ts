@@ -14,7 +14,7 @@ const app = express();
 // middleware setup
 app.use(lessMiddleware(__dirname + "/public"));
 app.use(express.static(__dirname + "/public"));
-app.use("/bower_components", express.static(__dirname + "/bower_components"));
+app.use("/node_modules", express.static(__dirname + "/node_modules"));
 app.use("/test", express.static(__dirname + "/public"));
 
 // view engine setup
