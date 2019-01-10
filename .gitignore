@@ -87,3 +87,4 @@ $RECYCLE.BIN/
 # Custom
 **.js
 public/styles/*.css
+!webpack.config.js
