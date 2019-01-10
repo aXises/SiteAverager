@@ -8,7 +8,7 @@ import { testURL } from "test/Test";
 import { fail } from "assert";
 import UnsupportedImageTypeError from "src/exception/UnsupportedImageTypeError";
 
-const imagesURL = "http://localhost:3000/images";
+const imagesURL = "http://localhost:3000/images/test";
 
 describe("Scrapper", () => {
     it("Scrapes images correctly.", async () => {
@@ -54,15 +54,9 @@ describe("Scrapper", () => {
             }
         });
         it("Verifies a corrupt file.", async () => {
-            try {
-                const scrapper: Scrapper = new Scrapper(testURL);
-                await scrapper.verifyAndPushImage(imagesURL + "/red100corrupt.png");
-                fail();
-            } catch (err) {
-                if (!(err instanceof UnsupportedImageTypeError)) {
-                    fail();
-                }
-            }
+            const scrapper: Scrapper = new Scrapper(testURL);
+            await scrapper.verifyAndPushImage(imagesURL + "/red100corrupt.png");
+            expect(scrapper.getImagesURL()).to.be.a("array").of.length(0);
         });
     });
 });

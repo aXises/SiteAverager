@@ -5,7 +5,7 @@ import ERGB from "src/enums/RGB";
 import ECMYK from "src/enums/CMYK";
 import EHSL from "src/enums/HSL";
 
-const imagesURL = "http://localhost:3000/images";
+const imagesURL = "http://localhost:3000/images/test";
 describe("Analyser", async () => {
     it("Initializes correctly.", async () => {
         const analyser = new Analyser([
