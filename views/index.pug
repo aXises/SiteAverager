@@ -15,8 +15,5 @@ block content
                 header
                     h1= "SITE AVERAGER"
                     p= "Get a overview of website image colour compositions."
-                form(action="analyse", method="POST")
-                    div.form-group
-                        input.form-control(name="url" type="text" placeholder="https://www.google.com/")
-                    div.form-group
-                        input.form-control(type="submit")
+                #formContainer
+    script(src="javascripts/form.bundle.js")
