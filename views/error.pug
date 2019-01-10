@@ -1,10 +1,8 @@
 extends layout
 
 block content
-    #error
-        h3= message
-        h4= error.status
-        pre #{error.stack}
-        h1 #{type}
-        button.btn.btn-info.new(type="button") New Query
-    script(type="text/javascript" src="/scripts/error.js")
+    main#error
+        .container
+            h1= "OWO SOMETHING WENT WRONG :("
+            p= message
+            button(type="button", onclick="document.location.href='/'") New Query

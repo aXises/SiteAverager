@@ -1,3 +1,28 @@
 body {
     overflow-y: hidden;
 }
+
+input[type="submit"],
+input[type="submit"]:focus,
+button,
+button:focus {
+    margin-top: 15px;
+    background-color: transparent;
+    cursor: pointer;
+    border: 1px solid white;
+    color: white;
+    height: 40px;
+    width: 70px;
+    float: right;
+    outline: none;
+    &:hover {
+        border-radius: 8px;
+    }
+    .animate-standard(0.2s);
+}
+
+button,
+button:focus {
+    float: none;
+    width: 100px;
+}

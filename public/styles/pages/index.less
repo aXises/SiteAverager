@@ -1,14 +1,77 @@
+body {
+    width: 100%;
+    height: 100vh;
+    background-color: #e2756a;
+}
 main#index {
-    .centerXY;
-    header {
-        margin-bottom: 20px;
+    width: inherit;
+    height: 100%;
+    section {
+        width: 50%;
+        height: inherit;
+        float: left;
+        .centerYFlex;
     }
-
-    form {
-        width: 90%;
-        margin: auto;
-        input[type="submit"] {
-            cursor: pointer;
+    section#left {
+        .centerXFlex;
+        .container {
+            ul {
+                li {
+                    width: 150px;
+                    height: 50px;
+                    margin: 30px 0 30px 0;
+                    border: 1px solid white;
+                    border-radius: 10px;
+                }
+                li:nth-of-type(1) {
+                    background-color: #e8492f;
+                }
+                li:nth-of-type(2) {
+                    background-color: #e4534c;
+                }
+                li:nth-of-type(3) {
+                    background-color: #ff5f5f;
+                }
+                li:nth-of-type(4) {
+                    background-color: #e64f67;
+                }
+                li:nth-of-type(5) {
+                    background-color: #ff586f;
+                }
+            }
         }
     }
+    section#right {
+        .container {
+            padding-left: 10px;
+            header {
+                h1 {
+                    color: white;
+                    font-weight: bold;
+                    font-size: 2em;
+                    letter-spacing: 18px;
+                }
+                p {
+                    margin-top: 5px;
+                    color: white;
+                }
+            }
+            form {
+                margin-top: 20px;
+                input[type="text"], input[type="text"]:focus {
+                    height: 30px;
+                    width: 100%;
+                    background-color: transparent;
+                    border: none;
+                    color: white;
+                    border-bottom: 1px solid white;
+                    outline: none;
+                }                
+            }
+        }
+    }
+}
+
+input::-webkit-input-placeholder {
+    color: white !important;
 }

@@ -5,26 +5,28 @@ block content
         #overallRGB(style=`background-color: rgb(${totalColourModes.RGB});`)
         #resultRGB
             each image in imageData
-                div.block(style=`background-color: rgb(${image.RGB});`)
-        - if (totalLuminance < 0.5)
-            #overallInfo.bright
-                +info
-        - else
+                div.block(style=`background-color: rgb(${image.RGB}); width: ${100 / imageData.length}%`)
+        - if (totalLuminance < 0.5 || isNaN(totalLuminance))
             #overallInfo
                 +info
-    script(type="text/javascript" src="/scripts/result.js")
+        - else
+            #overallInfo.dark
+                +info
 
 mixin info
-    p= "RGB: "
-        +generateColourModeString(totalColourModes.RGB, 0)
-    p= `HEX: #${totalColourModes.HEX}`
-    p= "CMYK: "
-        +generateColourModeString(totalColourModes.CMYK, 4)
-    p= `HSL: ${totalColourModes.HSL[0].toFixed(2)}°, ${(totalColourModes.HSL[1] * 100).toFixed(2)}%, ${(totalColourModes.HSL[2] * 100).toFixed(2)}%`
-    p= `Luminance: ${totalLuminance.toFixed(2)}`
     - if (imageData.length === 0)
-        - text = "No image were detected."
-    p= `Analysed ${totalPixels} pixels across ${imageData.length} image(s) in ${(timeTaken * 0.001).toFixed(2)} seconds.`
+        p= "No valid image(s) were detected."
+    - else
+        p= "RGB: "
+            +generateColourModeString(totalColourModes.RGB, 0)
+        p= `HEX: #${totalColourModes.HEX}`
+        p= "CMYK: "
+            +generateColourModeString(totalColourModes.CMYK, 4)
+        p= `HSL: ${totalColourModes.HSL[0].toFixed(2)}°, ${(totalColourModes.HSL[1] * 100).toFixed(2)}%, ${(totalColourModes.HSL[2] * 100).toFixed(2)}%`
+        p= `Luminance: ${totalLuminance.toFixed(2)}`
+
+        p= `Analysed ${totalPixels} pixels across ${imageData.length} image(s) in ${(timeTaken * 0.001).toFixed(2)} seconds.`
+    button(type="button", onclick="document.location.href='/'") New Query
 
 mixin generateColourModeString(arr, acc)
     - var i = 0
