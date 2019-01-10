@@ -1,6 +1,7 @@
 import * as express from "express";
 import Analyser from "src/Analyser";
 import Scrapper from "src/Scrapper";
+import { RequestError } from "request-promise/errors";
 
 const router = express.Router();
 
@@ -19,13 +20,19 @@ router.post("/", async (req, res) => {
             timeTaken: Date.now() - initTime,
         });
     } catch (err) {
-        res.render("error", {
-            message: "Analyser error",
-            error: {
-                status: 500,
-                stack: err,
-            },
-        });
+        if (err instanceof RequestError) {
+            res.render("error", {
+                message: "Invalid URI",
+            });
+        } else {
+            res.render("error", {
+                message: "Analyser error. Please see logs.",
+                error: {
+                    status: 500,
+                    stack: err,
+                },
+            });
+        }
     }
 });
 
