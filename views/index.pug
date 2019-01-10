@@ -2,11 +2,18 @@ extends layout
 
 block content
     main#index
-        header
-            h1=title
-        form(action="analyse" method="GET")
-            div.form-group
-                input.form-control(name="query" type="text" placeholder="www.google.com")
-            div.form-group
-                input.form-control(type="submit")
-    script(type="text/javascript" src="/scripts/index.js")
+        section#left
+            .container
+                ul
+                    li
+                    li
+                    li
+                    li
+                    li
+        section#right
+            .container
+                header
+                    h1= "SITE AVERAGER"
+                    p= "Get a overview of website image colour compositions."
+                #formContainer
+    script(src="javascripts/form.bundle.js")

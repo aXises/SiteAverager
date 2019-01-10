@@ -2,32 +2,33 @@ extends layout
 
 block content
     main#result
-        #overallRGB(style="background-color: rgb(" + colourModes.RGB + ");")
+        #overallRGB(style=`background-color: rgb(${totalColourModes.RGB});`)
         #resultRGB
-            each result in results
-                div.block(style="background-color: rgb(" + result.averageRGB + ");")
-        - if (prop.lum < 160)
-            #overallInfo.bright
-                +info
-        - else
+            each image in imageData
+                div.block(style=`background-color: rgb(${image.RGB}); width: ${100 / imageData.length}%`)
+        - if (totalLuminance < 0.5 || isNaN(totalLuminance))
             #overallInfo
                 +info
-    script(type="text/javascript" src="/scripts/result.js")
+        - else
+            #overallInfo.dark
+                +info
 
 mixin info
-    p= "RGB: "
-        +generateString(colourModes.RGB, 0)
-    p= "HEX: " + colourModes.HEX
-    p= "CMYK: "
-        +generateString(colourModes.CMYK, 4)
-    p= "HSL: " + colourModes.HSL[0].toFixed(2) + "° " + (colourModes.HSL[1] * 100).toFixed(2) + "% " + (colourModes.HSL[2] * 100).toFixed(2) + "%"
-    - var text = "Analysed " + prop.size[0] * prop.size[1] + " pixels across " + results.length + " images" + " in " + (timeTaken * 0.001).toFixed(2) + " seconds"
-    - if (results.length == 0)
-        - text = "No images detected"
-    - else if (results.length == 1) text = "Analysed " + prop.size[0] * prop.size[1] + " pixels across " + results.length + " image" + " in " + (timeTaken * 0.001).toFixed(2) + " seconds"
-    p= text
+    - if (imageData.length === 0)
+        p= "No valid image(s) were detected."
+    - else
+        p= "RGB: "
+            +generateColourModeString(totalColourModes.RGB, 0)
+        p= `HEX: #${totalColourModes.HEX}`
+        p= "CMYK: "
+            +generateColourModeString(totalColourModes.CMYK, 4)
+        p= `HSL: ${totalColourModes.HSL[0].toFixed(2)}°, ${(totalColourModes.HSL[1] * 100).toFixed(2)}%, ${(totalColourModes.HSL[2] * 100).toFixed(2)}%`
+        p= `Luminance: ${totalLuminance.toFixed(2)}`
 
-mixin generateString(arr, acc)
+        p= `Analysed ${totalPixels} pixels across ${imageData.length} image(s) in ${(timeTaken * 0.001).toFixed(2)} seconds.`
+    button(type="button", onclick="document.location.href='/'") New Query
+
+mixin generateColourModeString(arr, acc)
     - var i = 0
     each val in arr
         - if (i == arr.length - 1)
