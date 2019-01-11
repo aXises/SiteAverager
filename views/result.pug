@@ -5,7 +5,7 @@ block content
         #overallRGB(style=`background-color: rgb(${totalColourModes.RGB});`)
         #resultRGB
             each image in imageData
-                div.block(style=`background-color: rgb(${image.RGB}); width: ${100 / imageData.length}%`)
+                a.block(style=`background-color: rgb(${image.RGB}); width: ${100 / imageData.length}%`, href=`${image.url}`, target="_blank")
         - if (totalLuminance < 0.5 || isNaN(totalLuminance))
             #overallInfo
                 +info

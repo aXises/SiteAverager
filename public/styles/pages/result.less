@@ -15,8 +15,15 @@ main#result {
         bottom: 0;
         left: 0;
         .block {
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
             height: 50px;
             float: left;
+            border: 1px solid transparent;
+            &:hover {
+                border: 1px solid white;
+            }
         }
     }
     #overallInfo {
