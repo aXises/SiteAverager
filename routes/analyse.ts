@@ -1,7 +1,7 @@
 import * as express from "express";
 import Analyser from "src/Analyser";
 import Scrapper from "src/Scrapper";
-import { RequestError } from "request-promise/errors";
+import { RequestError, StatusCodeError } from "request-promise/errors";
 
 const router = express.Router();
 
@@ -22,11 +22,15 @@ router.post("/", async (req, res) => {
     } catch (err) {
         if (err instanceof RequestError) {
             res.render("error", {
-                message: "Invalid URI",
+                message: "Invalid URI.",
+            });
+        } else if (err instanceof StatusCodeError) {
+            res.render("error", {
+                message: `Request responded with status code: ${err.statusCode}.`,
             });
         } else {
             res.render("error", {
-                message: "Analyser error. Please see logs.",
+                message: `Analyser error: ${err.message}.`,
                 error: {
                     status: 500,
                     stack: err,
