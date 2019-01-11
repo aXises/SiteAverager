@@ -4,6 +4,11 @@ import json
 from io import BytesIO
 from PIL import Image
 
+def throw_error(data):
+    data["err"] = True
+    print(json.dumps(data))
+
+
 # Averages the RGB values on a given image
 def average(image):
     file = None
@@ -15,13 +20,9 @@ def average(image):
     try:
         file = Image.open(BytesIO(requests.get(image).content), "r")
     except (OSError, RuntimeError):
-        result["err"] = True
-        print(json.dumps(result))
-        return
+        return throw_error(result)
     if not file:
-        result["err"] = True
-        print(json.dumps(result))
-        return
+        return throw_error(result)
     data = file.getdata()
     ar = 0
     ag = 0
@@ -45,6 +46,8 @@ def average(image):
             result["err"] = True
             print(json.dumps(result))
             return
+    if (pixels == 0):
+        return throw_error(result)
     result = {
         "url": image,
         "size": [file.size[0], file.size[1]],
