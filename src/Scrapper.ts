@@ -3,6 +3,7 @@ import * as jsdom from "jsdom";
 import * as jquery from "jquery";
 import * as url from "url";
 import UnsupportedImageTypeError from "src/exception/UnsupportedImageTypeError";
+import { RequestError, StatusCodeError } from "request-promise/errors";
 
 const JPEGMagicNumber = "ffd8ff";
 const PNGMagicNumber = "89504e";
@@ -50,20 +51,23 @@ export default class Scrapper {
     }
 
     public async verifyAndPushImage(image: string): Promise<void> {
-            try {
-                const result = await request.get({
-                    url: image,
-                    /* tslint:disable */
-                    encoding: null,
-                });
-                if (result) {
-                    if (result.toString("hex", 0, 3) === JPEGMagicNumber || result.toString("hex", 0, 3) === PNGMagicNumber) {
-                        this.scrappedImagesURL.push(image);
-                    }
+        try {
+            const result = await request.get({
+                url: image,
+                /* tslint:disable */
+                encoding: null,
+            });
+            if (result) {
+                if (this.isValidImage(result)) {
+                    this.scrappedImagesURL.push(image);
                 }
-            } catch (err) {
+            }
+        } catch (err) {
+            if (!(err instanceof StatusCodeError)) {
                 throw err;
             }
+            
+        }
     }
 
     /**
@@ -71,18 +75,35 @@ export default class Scrapper {
      * @param {jsdom.DOMWindow} window - A DOM accessed by jquery.
      */
     private async scrapeImages(window: jsdom.DOMWindow): Promise<void> {
-        try {
-            const $: any = jquery(window);
-            if ($("img").length === 0) { return; }
-            const asyncImagesVerification = [];
-            for (const img of $("img")) {
-                const image = url.resolve(this.url, $(img).attr("src"));
-                asyncImagesVerification.push(this.verifyAndPushImage(image));
+        const images = window.document.getElementsByTagName("img");
+        if (images.length === 0) { return; }
+        const asyncImagesVerification = [];
+        for (const image of images) {
+            let src: string;
+            if (src = image.getAttribute("src")) {
+                asyncImagesVerification.push(this.verifyAndPushImage(url.resolve(this.url, src)));
+            } else {
+                for (let i = 0; i < image.attributes.length; i++) {
+                    const attr = image.attributes[i];
+                    if (attr.nodeName.startsWith("data-")) {
+                        asyncImagesVerification.push(this.verifyAndPushImage(url.resolve(this.url, attr.nodeValue)));
+                    }
+                }
             }
+        }
+        try {
             await Promise.all(asyncImagesVerification);
         } catch (err) {
-            throw err;
+            if (err instanceof RequestError) {
+                // Bad image link
+            } else {
+                throw err;
+            }
         }
+    }
+
+    private isValidImage(data: any): boolean {
+        return data.toString("hex", 0, 3) === JPEGMagicNumber || data.toString("hex", 0, 3) === PNGMagicNumber;
     }
 
     public getImagesURL(): string[] {
