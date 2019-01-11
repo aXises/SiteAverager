@@ -31,13 +31,19 @@ export default class Scrapper {
                 headers: {
                     gzip: true,
                 },
+                /* tslint:disable */
+                encoding: null,
             });
             if (result) {
-                await this.scrapeImages(new jsdom.JSDOM(result).window);
-                return this.scrappedImagesURL;
+                if (this.isValidImage(result)) {
+                    this.scrappedImagesURL.push(this.url);
+                } else {
+                    await this.scrapeImages(new jsdom.JSDOM(result.toString("utf8")).window);
+                }
             } else {
                 throw new Error("No data retrieved");
             }
+            return this.scrappedImagesURL;
         } catch (err) {
             throw err;
         }
